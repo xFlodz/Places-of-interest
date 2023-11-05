@@ -1,3 +1,6 @@
 <div>
     <h1>Main page</h1>
+    {% if current_user.is_authenticated %}
+    <h1>hello {{current_user.email}}</h1>
+    {% endif %}
 </div>
