@@ -1,3 +1,13 @@
+    {% if current_user.is_authenticated and current_user.role == 'poster' %}
 <div>
-    <h1>Create page</h1>
+    <h1>Login page</h1>
+    <form method="post" enctype="multipart/form-data">
+        <input name="header" type="text" value="Введите Заголовок">
+        <input name="text" type="text" value="Введите текст статьи">
+        <input name="image" type="file">
+        <input name="submit" type="submit" value="Создать">
+    </form>
 </div>
+    {% else %}
+    <meta http-equiv="refresh" content="0;URL=/"/>
+    {% endif %}

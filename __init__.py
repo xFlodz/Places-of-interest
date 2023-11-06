@@ -8,6 +8,7 @@ app.secret_key = 'ABC123'
 app.config['FLASK_ENV'] = 'development'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['ROLES'] = ['admin', 'poster']
 
 db = SQLAlchemy(app)
 manager = LoginManager(app)

@@ -1,3 +1,7 @@
-<div>
-    <h1>All posts page</h1>
-</div>
+{% if current_user.is_authenticated and current_user.role == 'poster' %}
+
+{% for post in posts %}
+    <h1>{{post.header}}, Адрес: {{post.address}}</h1>
+{% endfor %}
+
+{%endif%}
