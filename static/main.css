@@ -1,0 +1,49 @@
+body{
+    padding-top: 5%;
+}
+
+.header{
+    left: 0;
+    top: 0;
+    height: 10%;
+    position: fixed;
+    padding: 2%;
+    width: 100%;
+    z-index: 999;
+    align-content: flex-start;
+    background-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0px 6px 18px -4px rgba(0,0,0,0.5);
+}
+
+.header div{
+
+}
+
+.loginpage{
+    margin: 0% 15%;
+    padding: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: red; */
+}
+
+.loginpage form{
+    border: 3px double black;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+
+.loginpage input{
+    margin: 4%;
+}
+
+.loginpage button{
+    background-color: rgb(255, 255, 255);
+    margin: 0% 10%;
+    padding: 2px;
+    border-radius: 10px;
+    border: 2px solid black;
+}
