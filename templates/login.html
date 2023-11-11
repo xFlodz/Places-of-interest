@@ -1,20 +1,37 @@
+<head>
+  <link rel="stylesheet" href="../static/main.css">  
+</head>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-          {% with messages = get_flashed_messages(True) %}
-            {% if messages %}
-              {% for category, message in messages %}
-                <div class="alert alert-{{ category }}">
-                  {{ message }}
-                </div>
-              {% endfor %}
-            {% endif %}
-          {% endwith %}
-          {% block content %}{% endblock %}
-<div>
-    <h1>Login page</h1>
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+{% with messages = get_flashed_messages(True) %}
+  {% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<body>
+  <div>
+      <h1>Login page</h1>
+  </div>
+
+  <div class="loginpage">
     <form method="post">
-        <input name="login" type="text" value="Введите логин">
-        <input name="password" type="text" value="Введите пароль">
-        <input name="submit" type="submit" value="Войти">
+      <input name="login" type="text" placeholder="Введите логин" size="50">
+      <input name="password" type="password" placeholder="Введите пароль" size="50">
+      <!--
+      <input name="submit" type="submit" value="Войти">
+      -->
+      <button name="submit">Войти</button>
     </form>
-</div>
+  </div>
+</body>
+{% endblock %}
