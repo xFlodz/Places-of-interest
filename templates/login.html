@@ -6,8 +6,8 @@
 
 {% block content %}
 
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<!--
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 {% with messages = get_flashed_messages(True) %}
   {% if messages %}
     {% for category, message in messages %}
@@ -17,11 +17,9 @@
     {% endfor %}
   {% endif %}
 {% endwith %}
+-->
 
 <body>
-  <div>
-      <h1>Login page</h1>
-  </div>
 
   <div class="loginpage">
     <form method="post">
@@ -30,7 +28,7 @@
       <!--
       <input name="submit" type="submit" value="Войти">
       -->
-      <button name="submit">Войти</button>
+      <button name="submit" type="submit">Войти</button>
     </form>
   </div>
 </body>

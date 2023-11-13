@@ -1,7 +1,32 @@
-{% if current_user.is_authenticated and current_user.role == 'poster' %}
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
 
-{% for post in posts %}
-    <h1>{{post.header}}, Адрес: {{post.address}}</h1>
-{% endfor %}
+{% extends "base.html" %}
 
-{%endif%}
+{% block content %}
+
+<body>
+    {% if current_user.is_authenticated and current_user.role == 'poster' %}
+        {% else %}
+            <meta http-equiv="refresh" content="0;URL=/" />
+    {%endif%}
+<!--
+    <nav class="nav-sort"> Sort
+        <ul>
+            <li><a href="#">New</a></li>
+            <li><a href="#"></a>Short</li>
+            <li><a href="#"></a>A-Z</li>
+        </ul>
+    </nav>
+-->
+    <ul class="posts">
+        <li><div>
+            {% for post in posts %}
+            <a href="/post/{{post.address}}"><h1>{{post.header}}, Адрес: {{post.address}}</h1></a>
+            {% endfor %}
+        </div></li>
+    </ul>
+</body>
+
+{% endblock content %}

@@ -1,26 +1,61 @@
 body{
-    padding-top: 5%;
+    padding-top: 80px;
 }
 
 .header{
     left: 0;
     top: 0;
-    height: 10%;
+    height: 60px;
+    display: flex;
     position: fixed;
     padding: 2%;
     width: 100%;
     z-index: 999;
-    align-content: flex-start;
-    background-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0px 6px 18px -4px rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
-.header div{
+.header-mini{
+    box-shadow: 0px 6px 18px -4px rgba(0, 0, 0, 0.5);
+}
 
+.header-mini .header{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.menu{
+    display: flex;
+    list-style: none;
+    margin-top: 5%;
+}
+
+.menu button{
+    border-radius: 10px;
+    background-color: rgba(240, 255, 255, 0.329);
+    border: 2px solid black;
+    padding: 6px 15px;
+}
+
+.menu button:hover {
+    border-radius: 10px;
+    background-color: rgba(130, 160, 226, 0.192);
+    border: 2px solid rgb(0, 0, 0);
+    padding: 6px 15px;
+}
+
+.menu li{
+    margin-right: 80px;
+}
+
+.menu li a {
+    color: black;
+    text-decoration: none;
 }
 
 .loginpage{
-    margin: 0% 15%;
+    margin: 6% 15%;
     padding: 5%;
     display: flex;
     align-items: center;
@@ -38,6 +73,8 @@ body{
 
 .loginpage input{
     margin: 4%;
+    padding: 5px;
+    font-size: 1rem;
 }
 
 .loginpage button{
@@ -47,3 +84,29 @@ body{
     border-radius: 10px;
     border: 2px solid black;
 }
+
+.loginpage button:hover {
+    background-color: rgb(206, 206, 206);
+    border: 2px solid rgb(97, 97, 97);
+}
+
+.posts{
+    list-style: none;
+    display: flex;
+}
+
+.nav-sort *{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+
+.createpost{
+    display: flex;
+}
+/*
+input#post-text{
+    resize: both;
+}
+*/

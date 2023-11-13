@@ -1,13 +1,24 @@
-    {% if current_user.is_authenticated and current_user.role == 'poster' %}
-<div>
-    <h1>Login page</h1>
-    <form method="post" enctype="multipart/form-data">
-        <input name="header" type="text" value="Введите Заголовок">
-        <input name="text" type="text" value="Введите текст статьи">
-        <input name="image" type="file">
-        <input name="submit" type="submit" value="Создать">
-    </form>
-</div>
-    {% else %}
-    <meta http-equiv="refresh" content="0;URL=/"/>
-    {% endif %}
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<body>
+        {% if current_user.is_authenticated and current_user.role == 'poster' %}
+    <h1>Create post page</h1>
+    <div class="createpost">
+
+        <form method="post" enctype="multipart/form-data">
+            <input name="header" type="text" placeholder="Введите Заголовок">
+            <textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи"></textarea>
+            <input name="image" type="file">
+            <button name="submit" type="submit">Создать</button>
+        </form>
+    </div>
+        {% else %}
+        <meta http-equiv="refresh" content="0;URL=/"/>
+        {% endif %}
+</body>
+{% endblock content %}
