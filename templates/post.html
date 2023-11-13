@@ -1,7 +1,15 @@
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
 
+{% extends "base.html" %}
+
+{% block content %}
 <div>
+    <img src="{{post_image}}">
     <h1>{{post.header}}</h1>
     <h4> {{post.text}}</h4>
     <h5> {{post.image}}</h5>
-    <img src="{{post_image}}">
+
 </div>
+{% endblock content %}
