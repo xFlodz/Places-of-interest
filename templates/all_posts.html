@@ -5,28 +5,33 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-<body>
-    {% if current_user.is_authenticated and current_user.role == 'poster' %}
+<main>
+    <body>
+        {% if current_user.is_authenticated and current_user.role == 'poster' %}
         {% else %}
-            <meta http-equiv="refresh" content="0;URL=/" />
-    {%endif%}
-<!--
-    <nav class="nav-sort"> Sort
-        <ul>
-            <li><a href="#">New</a></li>
-            <li><a href="#"></a>Short</li>
-            <li><a href="#"></a>A-Z</li>
-        </ul>
-    </nav>
--->
-    <ul class="posts">
-        <li><div>
+        <meta http-equiv="refresh" content="0;URL=/" />
+        {%endif%}
+        <!--
+        <nav class="nav-sort"> Sort
+            <ul>
+                <li><a href="#">New</a></li>
+                <li><a href="#"></a>Short</li>
+                <li><a href="#"></a>A-Z</li>
+            </ul>
+        </nav>
+    -->
+        <div class="post-container">
             {% for post in posts %}
-            <a href="/post/{{post.address}}"><h1>{{post.header}}, Адрес: {{post.address}}</h1></a>
+            <a href="/post/{{post.address}}">
+                <div class="post">
+                    <div class="gradient"></div>
+                    <h2>{{post.header}}</h2>
+                    <img src="{{post.image}}" class="post-prev">
+                </div>
+            </a>
             {% endfor %}
-        </div></li>
-    </ul>
-</body>
+        </div>
+    </body>
+</main>
 
 {% endblock content %}

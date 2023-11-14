@@ -5,20 +5,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<body>
-        {% if current_user.is_authenticated and current_user.role == 'poster' %}
-    <h1>Create post page</h1>
-    <div class="createpost">
-
-        <form method="post" enctype="multipart/form-data">
-            <input name="header" type="text" placeholder="Введите Заголовок">
-            <textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи"></textarea>
-            <input name="image" type="file">
-            <button name="submit" type="submit">Создать</button>
-        </form>
-    </div>
-        {% else %}
-        <meta http-equiv="refresh" content="0;URL=/"/>
-        {% endif %}
-</body>
+{% if current_user.is_authenticated and current_user.role == 'poster' %}
+<main>    
+    <body>
+        <h1>Create post page</h1>
+        <div class="createpost">
+            <form method="post" enctype="multipart/form-data">
+                <input name="header" type="text" placeholder="Введите Заголовок">
+                <textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи"></textarea>
+                <input name="image" type="file">
+                <button name="submit" type="submit">Создать</button>
+            </form>
+        </div>
+    </body>
+</main>
+{% else %}
+    <meta http-equiv="refresh" content="0;URL=/" />
+{% endif %}
 {% endblock content %}

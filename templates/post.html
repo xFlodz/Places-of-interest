@@ -5,11 +5,16 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div>
-    <img src="{{post_image}}">
-    <h1>{{post.header}}</h1>
-    <h4> {{post.text}}</h4>
-    <h5> {{post.image}}</h5>
+<main>
+    <body>
+        <div>
+            <img src="{{post_image}}">
+            <h1>{{post.header}}</h1>
+            <h4 class="post-text"> {{post.text}}</h4>
+            <h5> {{post.image}}</h5>
+        
+        </div>
+    </body>
+</main>
 
-</div>
 {% endblock content %}

@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="../static/main.css"/>
+    <link rel="stylesheet" href="../static/main.css"/>
 <head>
     <meta charset="utf-8">
-    <script defer src="../js/main.js"></script>
+    <script defer src="../static/js/main.js"></script>
 </head>
 
-<body>
+<body class="head-body">
     <section class="header-wrap">
         <header id="header" class="header header-mini">
-            <a href="/allposts">
-                <img src="../static/static_images/logo-test" alt="logo" class="logo" width="100px"/>
-            </a>
+            <ul class="header-left-panel">
+                <li>
+                    <a href="/allposts"><img src="../static/static_images/logo.png" alt="logo" class="logo" height="100px"/></a>
+                </li>
+                <li>
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                    <h3>Hello, admin</h3>
+                    {%else%}
+                        {% if current_user.is_authenticated and current_user.role == 'poster' %}
+                        <h3>Hello, poster</h3>
+                        {%endif%}
+                    {%endif%}
+                </li>
+            </ul>
+            <!--Buttons "LogIn", "Create Post", "Register"-->
             <nav>
                 <ul class="menu">
+                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="#"><button>Register</button></a></li>
+                    {%else%}
+                    {%endif%}
                     <li><a href="/login"><button>LogIn</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'poster' %}
                     <li><a href="/createpost"><button>Create post</button></a></li>
