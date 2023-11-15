@@ -163,30 +163,33 @@ input#post-text{
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
     background: rgb(0, 0, 0);
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
 }
-
+/*
 .post:hover .post-prev{
     width: 500px;
     height: 500px;
 }
+*/
 
 .post-prev{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
     object-fit: cover;
     border-style: solid;
     z-index: -1;
 }
 
-.post h2{
+.post p{
+    max-width: 30ch;
+    font-size: 25px;
     justify-content: center;
     text-align: center;
     width: 300px;
@@ -194,18 +197,30 @@ input#post-text{
     margin-top: 80%;
     color: rgb(255, 255, 255);
     text-shadow: 0px 0px 15px #000000;
+    
 }
 
 
-@media only screen and (max-device-width: 800px) and (min-device-width: 300px) {
+@media only screen and (max-device-width: 800px) and (min-device-width: 280px) {
     .post {
         border: 2px solid black;
         display: flex;
-        height: 320px;
-        width: 320px;
-        background-color: rgb(200, 255, 0);
+        height: 350px;
+        width: 350px;
         padding: 10px;
         margin: 10px 40px;
+    }
+
+    .post-prev{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 35  0px;
+        object-fit: cover;
+        border-style: solid;
+        z-index: -1;
     }
 
     .post-container {
@@ -219,4 +234,44 @@ input#post-text{
         flex-direction: row;
         padding-bottom: 200px;
     }
+
+    .gradient{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 320px;
+        height: 320px;
+        background: rgb(0, 0, 0);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
+    }
+}
+
+#message-post{
+    padding: 0;
+    top: 0;
+    left: 0;
+    position: relative;
+    margin-top: 30px;
+    width: 95%;
+    height: 50px;
+    list-style: none;
+    background-color: violet;
+}
+
+#message-post *{
+    align-items: center;
+    justify-items: center;
+}
+
+.post-creation-message ul{
+    align-items: center;
+}
+
+.success{
+    background-color: greenyellow;
+}
+
+.danger{
+    background-color: red;
 }

@@ -33,7 +33,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -46,6 +46,7 @@ def login():
             if user.password == password:
                 login_user(user)
                 flash(f'Hello{user.email}', 'success')
+                return redirect('/allposts')
         else:
             flash('User dont exist', 'danger')
 
@@ -79,6 +80,7 @@ def create_post():
                 db.session.add(post)
                 db.session.commit()
                 print(f'success', {address})
+                flash('Пост создан', 'success')
             else:
                 flash('Недопустимый тип файла')
         else:
@@ -86,6 +88,7 @@ def create_post():
             db.session.add(post)
             db.session.commit()
             print(f'success, {address}')
+            flash('Пост создан', 'success')
     return render_template('create_post.html')
 
 @app.route('/allposts')

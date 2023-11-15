@@ -13,3 +13,4 @@ class Posts(db.Model):
     header = db.Column(db.String(100), nullable=False)
     image = db.Column(db.String(50))
     text = db.Column(db.String, nullable=False)
+    
