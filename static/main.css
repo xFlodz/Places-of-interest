@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body{
     padding-top: 80px;
 }
@@ -274,4 +275,282 @@ input#post-text{
 
 .danger{
     background-color: red;
+=======
+body{
+    padding-top: 80px;
+}
+
+main{
+    padding-top: 50px;
+}
+
+.header{
+    left: 0;
+    top: 0;
+    height: 50px;
+    display: flex;
+    position: fixed;
+    padding: 40px;
+    width: 100%;
+    z-index: 999;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 6px 18px -4px rgba(0, 0, 0, 0.5);
+    transition: box-shadow .3s;
+    transition: padding-top .3s, padding-bottom .3s;
+}
+
+.header-mini{
+    background-color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    box-shadow: 0px 6px 18px -4px rgba(0, 0, 0, 0.3);
+    padding-top: 25px;
+    padding-bottom: 25px;
+    transition: padding-top .3s, padding-bottom .3s;
+}
+
+.header-mini .header{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.header-left-panel{
+    display: flex;
+    list-style: none;
+    padding-left: 0%;
+    justify-content: space-between;
+    width: 250;
+    align-items: center;
+}
+
+.menu{
+    display: flex;
+    list-style: none;
+    /*margin-top: 5%;*/
+    margin-right: 25px;
+}
+
+.menu button{
+    border-radius: 10px;
+    background-color: rgba(240, 255, 255, 0.5);
+    border: 2px solid black;
+    padding: 6px 15px;
+}
+
+.menu button:hover {
+    background-color: rgba(166, 188, 235, 0.6);
+}
+
+.menu li{
+    margin-right: 80px;
+}
+
+.menu li a {
+    color: black;
+    text-decoration: none;
+}
+
+.loginpage{
+    margin: 6% 15%;
+    padding: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* background-color: red; */
+}
+
+.loginpage form{
+    border: 3px double black;
+    background-color: aliceblue;
+    display: flex;
+    flex-direction: column;
+    padding: 2%;
+}
+
+.loginpage input{
+    margin: 4%;
+    padding: 5px;
+    font-size: 1rem;
+}
+
+.loginpage button{
+    background-color: rgb(255, 255, 255);
+    margin: 0% 10%;
+    padding: 2px;
+    border-radius: 10px;
+    border: 2px solid black;
+}
+
+.loginpage button:hover {
+    background-color: rgb(206, 206, 206);
+    border: 2px solid rgb(97, 97, 97);
+}
+
+.post-container{
+    list-style: none;
+    display: flex;
+}
+
+.nav-sort *{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    float: left;
+}
+
+.createpost{
+    display: flex;
+}
+/*
+input#post-text{
+    resize: both;
+}
+*/
+
+.post-container{
+    left: 0;
+    top: 0;
+    margin: 100px 50px;
+    justify-content: space-around;
+    align-content: space-between;
+    flex-wrap: wrap;
+    height: 100%;
+    flex-direction: row;
+    padding-bottom: 200px;
+}
+
+.post-container a{
+    text-decoration: none;
+}
+
+.post{
+    position: relative;
+    border: 2px solid black;
+    display: flex;
+    height: 400px;
+    width: 400px;
+    padding: 10px;
+    margin: 50px 40px;
+    justify-content: center;
+}
+
+.gradient{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    height: 380px;
+    background: rgb(0, 0, 0);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
+}
+/*
+.post:hover .post-prev{
+    width: 500px;
+    height: 500px;
+}
+*/
+
+.post-prev{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 380px;
+    height: 380px;
+    object-fit: cover;
+    border-style: solid;
+    z-index: -1;
+}
+
+.post p{
+    max-width: 30ch;
+    font-size: 25px;
+    justify-content: center;
+    text-align: center;
+    width: 300px;
+    z-index: 90;
+    margin-top: 80%;
+    color: rgb(255, 255, 255);
+    text-shadow: 0px 0px 15px #000000;
+    
+}
+
+
+@media only screen and (max-device-width: 800px) and (min-device-width: 280px) {
+    .post {
+        border: 2px solid black;
+        display: flex;
+        height: 350px;
+        width: 350px;
+        padding: 10px;
+        margin: 10px 40px;
+    }
+
+    .post-prev{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 350px;
+        height: 35  0px;
+        object-fit: cover;
+        border-style: solid;
+        z-index: -1;
+    }
+
+    .post-container {
+        left: 0;
+        top: 0;
+        margin: 100px 50px;
+        justify-content: space-around;
+        align-content: space-around;
+        flex-wrap: wrap;
+        height: 100%;
+        flex-direction: row;
+        padding-bottom: 200px;
+    }
+
+    .gradient{
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 320px;
+        height: 320px;
+        background: rgb(0, 0, 0);
+        background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
+    }
+}
+
+#message-post{
+    padding: 0;
+    top: 0;
+    left: 0;
+    position: relative;
+    margin-top: 30px;
+    width: 95%;
+    height: 50px;
+    list-style: none;
+    background-color: violet;
+}
+
+#message-post *{
+    align-items: center;
+    justify-items: center;
+}
+
+.post-creation-message ul{
+    align-items: center;
+}
+
+.success{
+    background-color: greenyellow;
+}
+
+.danger{
+    background-color: red;
+>>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
 }

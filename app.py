@@ -49,6 +49,10 @@ def login():
         if user:
             if user.password == password:
                 login_user(user)
+<<<<<<< HEAD
+=======
+                flash(f'Hello{user.email}', 'success')
+>>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
                 return redirect('/allposts')
         else:
             flash('Пользователь не существует', 'danger')
@@ -78,6 +82,7 @@ def create_post():
         text = request.form.get('text')
         images = request.files.getlist('images')
         address = create_address()
+<<<<<<< HEAD
 
         if main_image:
             check_main = check_type_main(main_image)
@@ -98,13 +103,33 @@ def create_post():
                     db.session.add(post)
                     db.session.commit()
                     flash('Пост создан', 'success')
+=======
+        if image:
+            check = allowed_file(image, address)
+            if check == 1:
+                filetype = image.filename.rsplit('.', 1)[1].lower()
+                image = f'/static/post_images/{address}.{filetype}'
+                post = Posts(header=header, text=text, image=image, address=address)
+                db.session.add(post)
+                db.session.commit()
+                print(f'success', {address})
+                flash('Пост создан', 'success')
+>>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
             else:
                 flash('Основная картинка не может быть такого типа', 'danger')
         else:
+<<<<<<< HEAD
             flash('Добавьте основную картинку', 'danger')
 
 
 
+=======
+            post = Posts(header=header, text=text, address=address)
+            db.session.add(post)
+            db.session.commit()
+            print(f'success, {address}')
+            flash('Пост создан', 'success')
+>>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
     return render_template('create_post.html')
 
 @app.route('/allposts')
