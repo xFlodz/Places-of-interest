@@ -1,3 +1,6 @@
 def image_editor(text):
-    text = text.split(' ')
+    if text:
+        text = text.split(' ')
+    else:
+        pass
     return text

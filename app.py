@@ -49,10 +49,6 @@ def login():
         if user:
             if user.password == password:
                 login_user(user)
-<<<<<<< HEAD
-=======
-                flash(f'Hello{user.email}', 'success')
->>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
                 return redirect('/allposts')
         else:
             flash('Пользователь не существует', 'danger')
@@ -82,54 +78,39 @@ def create_post():
         text = request.form.get('text')
         images = request.files.getlist('images')
         address = create_address()
-<<<<<<< HEAD
 
-        if main_image:
-            check_main = check_type_main(main_image)
-            if check_main == True:
-                main_image = save_main(main_image, address)
-                if images:
-                    check_images = check_type_images(images)
-                    if check_images == True:
-                        images = save_images(images, address)
-                        post = Posts(address=address, header=header, text=text, main_image=main_image, post_images=images)
-                        db.session.add(post)
-                        db.session.commit()
-                        flash('Пост создан', 'success')
+        if header:
+            if text:
+                if main_image:
+                    check_main = check_type_main(main_image)
+                    if check_main == True:
+                        main_image = save_main(main_image, address)
+                        if images[0]:
+                            check_images = check_type_images(images)
+                            if check_images == True:
+                                images = save_images(images, address)
+                                post = Posts(address=address, header=header, text=text, main_image=main_image, post_images=images)
+                                db.session.add(post)
+                                db.session.commit()
+                                flash('Пост создан', 'success')
+                            else:
+                                flash('Не допустимый тип у картинок в посте', 'danger')
+                        else:
+                            post = Posts(address=address, header=header, text=text, main_image=main_image)
+                            db.session.add(post)
+                            db.session.commit()
+                            flash('Пост создан', 'success')
                     else:
-                        flash('Не допустимый тип у картинок в посте', 'danger')
+                        flash('Основная картинка не может быть такого типа', 'danger')
                 else:
-                    post = Posts(address=address, header=header, text=text, main_image=main_image)
-                    db.session.add(post)
-                    db.session.commit()
-                    flash('Пост создан', 'success')
-=======
-        if image:
-            check = allowed_file(image, address)
-            if check == 1:
-                filetype = image.filename.rsplit('.', 1)[1].lower()
-                image = f'/static/post_images/{address}.{filetype}'
-                post = Posts(header=header, text=text, image=image, address=address)
-                db.session.add(post)
-                db.session.commit()
-                print(f'success', {address})
-                flash('Пост создан', 'success')
->>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
+                    flash('Добавьте основную картинку', 'danger')
             else:
-                flash('Основная картинка не может быть такого типа', 'danger')
+                flash('Добавьте в пост текст', 'danger')
         else:
-<<<<<<< HEAD
-            flash('Добавьте основную картинку', 'danger')
+            flash('Добавьте в пост заголовок', 'danger')
 
 
 
-=======
-            post = Posts(header=header, text=text, address=address)
-            db.session.add(post)
-            db.session.commit()
-            print(f'success, {address}')
-            flash('Пост создан', 'success')
->>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
     return render_template('create_post.html')
 
 @app.route('/allposts')

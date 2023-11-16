@@ -8,21 +8,19 @@
 <main>
     <body>
         <div>
-<<<<<<< HEAD
             <img src="/{{post.main_image}}">
             <h1>{{post.header}}</h1>
             {% for i in count %}
+            {%if mini_text[i]%}
             <h1>{{mini_text[i]}}</h1>
+            {%endif%}
+            {%if images[i]%}
             <img src="/{{images[i]}}">
+            {%endif%}
+            {%if notes[i]%}
             <h5>{{notes[i]}}</h5>
+            {%endif%}
             {%endfor%}
-=======
-            <img src="{{post_image}}">
-            <h1>{{post.header}}</h1>
-            <h4 class="post-text"   > {{post.text}}</h4>
-            <h5> {{post.image}}</h5>
-        
->>>>>>> a0ed675aed43f254ef1706b2c98c02846467b2b3
         </div>
     </body>
 </main>
