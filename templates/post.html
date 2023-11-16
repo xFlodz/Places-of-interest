@@ -1,7 +1,22 @@
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
 
-<div>
-    <h1>{{post.header}}</h1>
-    <h4> {{post.text}}</h4>
-    <h5> {{post.image}}</h5>
-    <img src="{{post_image}}">
-</div>
+{% extends "base.html" %}
+
+{% block content %}
+<main>
+    <body>
+        <div>
+            <img src="/{{post.main_image}}">
+            <h1>{{post.header}}</h1>
+            {% for i in count %}
+            <h1>{{mini_text[i]}}</h1>
+            <img src="/{{images[i]}}">
+            <h5>{{notes[i]}}</h5>
+            {%endfor%}
+        </div>
+    </body>
+</main>
+
+{% endblock content %}

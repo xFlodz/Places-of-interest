@@ -5,7 +5,10 @@ from flask_login import login_required, login_user, logout_user
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-from save_picture import allowed_file
+from save_picture import save_images, save_main, check_type_images, check_type_main
+from text_editor import text_editor
+from image_editor import image_editor
+from counter import counter
 
 @app.route('/')
 def index():
@@ -19,13 +22,14 @@ def register():
         login = request.form.get('login')
         user = Users.query.filter_by(email=login).first()
         if user:
-            flash('This user already exists', 'danger')
+            flash('Пользователь уже существует', 'danger')
         else:
             password = create_password()
             print(password)
             user = Users(email=login, password=password, role='poster')
             db.session.add(user)
             db.session.commit()
+            flash('Пользователь добавлен', 'success')
     return render_template('register.html')
 
 
@@ -33,7 +37,7 @@ def register():
 @login_required
 def logout():
     logout_user()
-    return redirect('/')
+    return redirect('/login')
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -45,9 +49,9 @@ def login():
         if user:
             if user.password == password:
                 login_user(user)
-                flash(f'Hello{user.email}', 'success')
+                return redirect('/allposts')
         else:
-            flash('User dont exist', 'danger')
+            flash('Пользователь не существует', 'danger')
 
     return render_template('login.html')
 
@@ -56,36 +60,51 @@ def login():
 def post(address):
     post = Posts.query.filter_by(address=address).first()
     if post:
-        pass
+        text = post.text
+        mini_text, notes = text_editor(text)
+        images_list = image_editor(post.post_images)
+        count = counter(mini_text)
     else:
         return redirect('/')
-    return render_template('post.html', post=post, post_image=post.image)
+    return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count)
 
 
 @app.route('/createpost', methods=['POST', 'GET'])
 @login_required
 def create_post():
     if request.method == 'POST':
+        main_image = request.files['main-image']
         header = request.form.get('header')
         text = request.form.get('text')
-        image = request.files['image']
+        images = request.files.getlist('images')
         address = create_address()
-        if image:
-            check = allowed_file(image, address)
-            if check == 1:
-                filetype = image.filename.rsplit('.', 1)[1].lower()
-                image = f'/static/post_images/{address}.{filetype}'
-                post = Posts(header=header, text=text, image=image, address=address)
-                db.session.add(post)
-                db.session.commit()
-                print(f'success', {address})
+
+        if main_image:
+            check_main = check_type_main(main_image)
+            if check_main == True:
+                main_image = save_main(main_image, address)
+                if images:
+                    check_images = check_type_images(images)
+                    if check_images == True:
+                        images = save_images(images, address)
+                        post = Posts(address=address, header=header, text=text, main_image=main_image, post_images=images)
+                        db.session.add(post)
+                        db.session.commit()
+                        flash('Пост создан', 'success')
+                    else:
+                        flash('Не допустимый тип у картинок в посте', 'danger')
+                else:
+                    post = Posts(address=address, header=header, text=text, main_image=main_image)
+                    db.session.add(post)
+                    db.session.commit()
+                    flash('Пост создан', 'success')
             else:
-                flash('Недопустимый тип файла')
+                flash('Основная картинка не может быть такого типа', 'danger')
         else:
-            post = Posts(header=header, text=text, address=address)
-            db.session.add(post)
-            db.session.commit()
-            print(f'success, {address}')
+            flash('Добавьте основную картинку', 'danger')
+
+
+
     return render_template('create_post.html')
 
 @app.route('/allposts')
