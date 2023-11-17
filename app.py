@@ -1,6 +1,7 @@
 from flask import render_template, flash, request, redirect
 from models import Users, Posts
 from flask_login import login_required, login_user, logout_user
+from werkzeug.security import check_password_hash, generate_password_hash
 
 from __init__ import db, app, manager
 from address_generator import create_address
@@ -27,6 +28,7 @@ def register():
         else:
             password = create_password()
             flash(f'Пароль {password}', 'success')
+            password = generate_password_hash(password)
             user = Users(email=login, password=password, role='poster')
             db.session.add(user)
             db.session.commit()
@@ -47,7 +49,7 @@ def login():
         password = request.form.get('password')
         user = Users.query.filter_by(email=login).first()
         if user:
-            if user.password == password:
+            if check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/allposts')
         else:
@@ -144,6 +146,13 @@ def all_posts():
 def load_user(user_id):
     return Users.query.get(user_id)
 
+def error(e):
+    return render_template('error.html')
+
+
+app.register_error_handler(404, error)
+app.register_error_handler(401, error)
+
 
 if __name__ == '__main__':
     db.create_all()
@@ -151,8 +160,9 @@ if __name__ == '__main__':
     if user:
         pass
     else:
-        user = Users(email='admin', password='1234', role='admin')
-        user2 = Users(email='poster', password='1234', role='poster')
+        password = generate_password_hash('1234')
+        user = Users(email='admin', password=password, role='admin')
+        user2 = Users(email='poster', password=password, role='poster')
         db.session.add(user)
         db.session.add(user2)
         db.session.commit()
