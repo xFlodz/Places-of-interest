@@ -1,0 +1,43 @@
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.role == 'poster' %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class=flashes id="message-post">
+    {% for category, message in messages %}
+      <div class="{{ category }}"><h2 class="creation-message">{{ message }}</h2></div>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<main>    
+    <body>
+        <div class="tutorial">
+          <a>Текст с правилами по созданию поста</a>
+        </div>
+        <div class="createpost">
+            <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+              <ul>
+                <li><input name="header" type="text" placeholder="Введите Заголовок" size="50"></li>
+                <li><input name="main-image" type="file"></li>
+                <li><textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи" cols="120" rows="30"></textarea></li>
+                <li style="justify-content: space-between; display: flex;"><input name="images" type="file" multiple>
+                <button name="submit" type="submit">Создать</button></li>
+              </ul>
+            </form>
+        </div>
+    </body>
+</main>
+{% else %}
+    <meta http-equiv="refresh" content="0;URL=/" />
+{% endif %}
+{% endblock content %}
