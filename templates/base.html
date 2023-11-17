@@ -5,7 +5,15 @@
     <meta charset="utf-8">
     <script defer src="../static/js/main.js"></script>
 </head>
-
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class=flashes id="message-post">
+    {% for category, message in messages %}
+      <div class="{{ category }}"><h2 class="creation-message">{{ message }}</h2></div>
+    {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
 <body class="head-body">
     <section class="header-wrap">
         <header id="header" class="header header-mini">
@@ -18,7 +26,7 @@
                     <h3>Hello, admin</h3>
                     {%else%}
                         {% if current_user.is_authenticated and current_user.role == 'poster' %}
-                        <h3>Hello, poster</h3>
+                        <h3>Hello, poster {{current_user.email}}</h3>
                         {%endif%}
                     {%endif%}
                 </li>

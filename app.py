@@ -26,11 +26,10 @@ def register():
             flash('Пользователь уже существует', 'danger')
         else:
             password = create_password()
-            print(password)
+            flash(f'Пароль {password}', 'success')
             user = Users(email=login, password=password, role='poster')
             db.session.add(user)
             db.session.commit()
-            flash('Пользователь добавлен', 'success')
     return render_template('register.html')
 
 

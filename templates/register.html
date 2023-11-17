@@ -1,11 +1,27 @@
-    {% if current_user.is_authenticated and current_user.role == 'admin' %}
-<div>
-    <h1>Register page</h1>
-    <form method="post">
-        <input name="login" type="text" value="Введите логин">
-        <input name="submit" type="submit" value="Регистрация">
-    </form>
-</div>
-    {% else %}
-    <meta http-equiv="refresh" content="0;URL=/"/>
-    {% endif %}
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.role == 'admin' %}
+
+<main>
+    <body>
+        <div class="createpost">
+            <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+              <ul>
+                <li><input name="login" type="text" placeholder="Введите логин" size="50"></li>
+                <button name="submit" type="submit">Создать</button></li>
+              </ul>
+            </form>
+        </div>
+    </body>
+</main>
+{% else %}
+    <meta http-equiv="refresh" content="0;URL=/" />
+{% endif %}
+{% endblock content %}
