@@ -30,14 +30,14 @@
                     <li><a href="/register"><button>Register</button></a></li>
                     {%else%}
                     {%endif%}
-                    <li><a href="/login"><button>LogIn</button></a></li>
+                    <li><a href="/login"><button>Login</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'poster' %}
                     <li><a href="/createpost"><button>Create post</button></a></li>
                     {%else%}
                     {%endif%}
 
                     {%if current_user.is_authenticated%}
-                    <li><a href="/logout"><button>LogOut</button></a></li>
+                    <li><a href="/logout"><button>Logout</button></a></li>
                     {%endif%}
                 </ul>
             </nav>

@@ -113,6 +113,25 @@ def create_post():
 
     return render_template('create_post.html')
 
+
+@app.route('/editpost/<address>', methods=['POST', 'GET'])
+@login_required
+def edit_post(address):
+    post = Posts.query.filter_by(address=address).first()
+    if request.method == 'POST':
+        pass
+    return render_template('edit_post.html', post=post)
+
+
+@app.route('/deletepost/<address>')
+@login_required
+def delete_post(address):
+    post = Posts.query.filter_by(address=address).first()
+    db.session.delete(post)
+    db.session.commit()
+    return redirect('/')
+
+
 @app.route('/allposts')
 @login_required
 def all_posts():
