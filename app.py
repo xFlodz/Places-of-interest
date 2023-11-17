@@ -11,6 +11,7 @@ from text_editor import text_editor
 from image_editor import image_editor
 from counter import counter
 from delete_images import delete_images
+from mail_sender import mailsend
 
 @app.route('/')
 def index():
@@ -28,6 +29,7 @@ def register():
         else:
             password = create_password()
             flash(f'Пароль {password}', 'success')
+            mailsend(login, password)
             password = generate_password_hash(password)
             user = Users(email=login, password=password, role='poster')
             db.session.add(user)
