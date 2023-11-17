@@ -1,14 +1,10 @@
 import re
 
 def text_editor(text):
-    text = text + '/'
-    notes = re.findall(r'\{(.*?)\}', text)
-    text_without_braces = re.sub(r'\{(.*?)\}', ' ', text)
-    text_list = text_without_braces.split()
+    inside_brackets = re.findall(r'{(.*?)}', text)
+    outside_brackets = re.split(r'{.*?}', text)
 
-    mini_text = []
-    for i in text_list:
-        if '/' in i:
-            i = i.replace('/', '')
-            mini_text.append(i)
-    return mini_text, notes
+    inside_brackets = [item.strip() for item in inside_brackets if item.strip()]
+    outside_brackets = [item.strip() for item in outside_brackets if item.strip()]
+
+    return outside_brackets, inside_brackets
