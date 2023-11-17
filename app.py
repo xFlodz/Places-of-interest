@@ -9,6 +9,7 @@ from save_picture import save_images, save_main, check_type_images, check_type_m
 from text_editor import text_editor
 from image_editor import image_editor
 from counter import counter
+from delete_images import delete_images
 
 @app.route('/')
 def index():
@@ -127,6 +128,7 @@ def edit_post(address):
 @login_required
 def delete_post(address):
     post = Posts.query.filter_by(address=address).first()
+    delete_images(post)
     db.session.delete(post)
     db.session.commit()
     return redirect('/')
