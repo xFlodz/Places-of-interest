@@ -10,16 +10,7 @@
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
         {% else %}
         <meta http-equiv="refresh" content="0;URL=/" />
-        {%endif%}
-        <!--
-        <nav class="nav-sort"> Sort
-            <ul>
-                <li><a href="#">New</a></li>
-                <li><a href="#"></a>Short</li>
-                <li><a href="#"></a>A-Z</li>
-            </ul>
-        </nav>
-    -->
+        {%endif%}   
         <div class="post-container">
             {% for post in posts %}
             <a href="/post/{{post.address}}">
