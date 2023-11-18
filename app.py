@@ -6,8 +6,8 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-from save_picture import save_images, save_main, check_type_images, check_type_main
-from text_editor import text_editor
+from save_picture import save_images, save_main, check_type_images, check_type_main, update_images
+from text_editor import text_editor, get_notes
 from image_editor import image_editor
 from counter import counter
 from delete_images import delete_images, delete_main
@@ -65,9 +65,12 @@ def post(address):
     post = Posts.query.filter_by(address=address).first()
     if post:
         text = post.text
-        mini_text, notes = text_editor(text)
-        images_list = image_editor(post.post_images)
+        mini_text = text_editor(text)
+        images_list = post.post_images
         count = counter(mini_text)
+        notes = get_notes(images_list, post.address)
+        images_list = image_editor(post.post_images)
+        print(mini_text)
     else:
         return redirect('/')
     return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count)
@@ -96,14 +99,14 @@ def create_post():
                                 post = Posts(address=address, header=header, text=text, main_image=main_image, post_images=images)
                                 db.session.add(post)
                                 db.session.commit()
-                                flash('Пост создан', 'success')
+                                return redirect(f'/confirmpost/{post.address}')
                             else:
                                 flash('Не допустимый тип у картинок в посте', 'danger')
                         else:
                             post = Posts(address=address, header=header, text=text, main_image=main_image)
                             db.session.add(post)
                             db.session.commit()
-                            flash('Пост создан', 'success')
+                            return redirect(f'/confirmpost/{post.address}')
                     else:
                         flash('Основная картинка не может быть такого типа', 'danger')
                 else:
@@ -116,6 +119,30 @@ def create_post():
 
 
     return render_template('create_post.html')
+
+
+@app.route('/confirmpost/<address>', methods=['POST', 'GET'])
+@login_required
+def confirm_post(address):
+    post = Posts.query.filter_by(address=address).first()
+    text = post.text
+    mini_text = text_editor(text)
+    images_list = image_editor(post.post_images)
+    count = counter(mini_text)
+    if request.method == 'POST':
+        notes = []
+        for i in range(len(images_list)):
+            note = request.form.get(f'note{i}')
+            if len(note) > 155:
+                flash('Описание больше 155 символов', 'danger')
+            else:
+                notes.append(note)
+        if len(images_list) == len(notes):
+            names = update_images(notes, images_list)
+            post.post_images = names
+            db.session.commit()
+            return redirect(f'/post/{address}')
+    return render_template('confirm_post.html', post=post, mini_text=mini_text, images=images_list, count=count)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
@@ -141,7 +168,7 @@ def edit_post(address):
             if check == True:
                 delete_images(post)
                 new_images = save_images(images, address)
-                post.images = new_images
+                post.post_images = new_images
             else:
                 error = True
         if text:

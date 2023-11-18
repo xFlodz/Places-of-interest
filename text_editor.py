@@ -1,10 +1,18 @@
 import re
 
 def text_editor(text):
-    inside_brackets = re.findall(r'{(.*?)}', text)
-    outside_brackets = re.split(r'{.*?}', text)
+    text = text.split('$')
+    return text
 
-    inside_brackets = [item.strip() for item in inside_brackets if item.strip()]
-    outside_brackets = [item.strip() for item in outside_brackets if item.strip()]
+def get_notes(image_list, address):
+    image_list = image_list.split(' ')
+    image_list.pop()
+    notes = []
+    for i in range(len(image_list)):
+        image_list[i] = image_list[i].replace(address,' ')
+        image_list[i] = image_list[i].replace('static/post_images/', '')
+        image_list[i].split(' ')
+        note = image_list[i].split(' ')
+        notes.append(note[0])
+    return notes
 
-    return outside_brackets, inside_brackets

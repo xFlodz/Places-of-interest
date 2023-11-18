@@ -38,3 +38,13 @@ def save_main(file, address):
     file.save(name)
     return name
 
+
+def update_images(notes, images_list):
+    names = ''
+    for i in range(len(images_list)):
+        file_name = images_list[i].replace('static/post_images/', '')
+        file_name = 'static/post_images/' + notes[i] + file_name
+        names = names + file_name + ' '
+        os.rename(images_list[i], file_name)
+    return names
+
