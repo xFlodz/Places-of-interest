@@ -10,7 +10,7 @@ from save_picture import save_images, save_main, check_type_images, check_type_m
 from text_editor import text_editor
 from image_editor import image_editor
 from counter import counter
-from delete_images import delete_images
+from delete_images import delete_images, delete_main
 from mail_sender import mailsend
 
 @app.route('/')
@@ -123,7 +123,36 @@ def create_post():
 def edit_post(address):
     post = Posts.query.filter_by(address=address).first()
     if request.method == 'POST':
-        pass
+        main_image = request.files['main-image']
+        header = request.form.get('header')
+        text = request.form.get('text')
+        images = request.files.getlist('images')
+        error = False
+        if main_image:
+            check = check_type_main(main_image)
+            if check == True:
+                delete_main(post)
+                new_main_image = save_main(main_image, post.address)
+                post.main_image = new_main_image
+            else:
+                error = True
+        if images[0]:
+            check = check_type_images(images)
+            if check == True:
+                delete_images(post)
+                new_images = save_images(images, address)
+                post.images = new_images
+            else:
+                error = True
+        if text:
+            post.text = text
+        if header:
+            post.header = header
+        if error == False:
+            db.session.commit()
+            return redirect(f'/post/{address}')
+        else:
+            flash('Картинка не может быть такого типа', 'danger')
     return render_template('edit_post.html', post=post)
 
 
@@ -132,6 +161,7 @@ def edit_post(address):
 def delete_post(address):
     post = Posts.query.filter_by(address=address).first()
     delete_images(post)
+    delete_main(post)
     db.session.delete(post)
     db.session.commit()
     return redirect('/')

@@ -1,0 +1,36 @@
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.role == 'poster' %}
+
+<main>
+
+    <body>
+        <div class="tutorial">
+            <a>Текст с правилами по созданию поста</a>
+        </div>
+        <div class="createpost">
+            <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+                <ul>
+                    <li><input name="header" type="text" size="50" value="{{post.header}}"></li>
+                    <li><input name="main-image" type="file"></li>
+                    <li><textarea name="text" type="text" id="post-text" cols="120" rows="30">{{post.text}}</textarea></li>
+                    <li style="justify-content: space-between; display: flex;"><input name="images" type="file"
+                            multiple>
+                        <button name="submit" type="submit">Изменить</button>
+                    </li>
+                </ul>
+            </form>
+        </div>
+    </body>
+</main>
+{% else %}
+<meta http-equiv="refresh" content="0;URL=/" />
+{% endif %}
+{% endblock content %}

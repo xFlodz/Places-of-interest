@@ -19,33 +19,28 @@
         <header id="header" class="header header-mini">
             <ul class="header-left-panel">
                 <li>
-                    <a href="/allposts"><img src="../static/static_images/logo.png" alt="logo" class="logo" height="100px"/></a>
+                    <a href="/allposts"><img src="../static/static_images/miigaik245.png" alt="logo" class="logo" height="80px"/></a>
                 </li>
-                <li>
-                    {% if current_user.is_authenticated and current_user.role == 'admin' %}
-                    <h3>Hello, admin</h3>
-                    {%else%}
-                        {% if current_user.is_authenticated and current_user.role == 'poster' %}
-                        <h3>Hello, poster {{current_user.email}}</h3>
-                        {%endif%}
-                    {%endif%}
-                </li>
-            </ul>
-            <!--Buttons "LogIn", "Create Post", "Register"-->
+            </ul>   
+
+            <div class="main-logo">
+                <a href="/allposts"><img src="../static/static_images/logo.png" alt="logo-main" height="80px" /></a>
+            </div>
+            
             <nav>
                 <ul class="menu">
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
-                    <li><a href="/register"><button>Register</button></a></li>
+                    <li><a href="/register"><button>Зарегистрировать</button></a></li>
                     {%else%}
                     {%endif%}
-                    <li><a href="/login"><button>Login</button></a></li>
+                    <li><a href="/login"><button>Войти</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'poster' %}
-                    <li><a href="/createpost"><button>Create post</button></a></li>
+                    <li><a href="/createpost"><button>Создать пост</button></a></li>
                     {%else%}
                     {%endif%}
 
                     {%if current_user.is_authenticated%}
-                    <li><a href="/logout"><button>Logout</button></a></li>
+                    <li><a href="/logout"><button>Выйти</button></a></li>
                     {%endif%}
                 </ul>
             </nav>
