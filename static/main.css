@@ -4,11 +4,14 @@
 
 body{
     padding-top: 80px;
+    background-color: rgb(228, 227, 227);
 }
 
 main{
     padding-top: 50px;
 }
+
+
 
 .header{
     left: 0;
@@ -52,17 +55,18 @@ main{
 }
 
 .menu{
+    justify-content: space-between;
     display: flex;
     list-style: none;
-    /*margin-top: 5%;*/
-    margin-right: 25px;
+    margin-right: 60px;
+    width: auto;
 }
 
 .menu button{
-    border-radius: 10px;
+    border-radius: 20px;
     background-color: rgba(255, 255, 255, 0);
     border: 2px solid #000072;
-    padding: 10px 25px;
+    padding: 10px 15px;
     font-size: 14;
     font-weight: 600;
 }
@@ -73,7 +77,7 @@ main{
 }
 
 .menu li{
-    margin-right: 80px;
+    padding: 0px 30px;
 }
 
 .menu li a {
@@ -82,7 +86,7 @@ main{
 }
 
 .loginpage{
-    margin: 6% 15%;
+    margin: 2% 15%;
     padding: 5%;
     display: flex;
     align-items: center;
@@ -90,33 +94,39 @@ main{
 }
 
 .loginpage form{
-    border: 3px double black;
-    background-color: #0000727a;
     display: flex;
     flex-direction: column;
     padding: 2%;
 }
 
 .loginpage input{
+    border-radius: 20px;
     margin: 4%;
     padding: 5px;
     font-size: 1rem;
     outline: none;
     border: none;
-    border-bottom: 2px solid #000072;
+    padding: 15px 20px;
 }
 
 .loginpage button{
     background-color: rgb(255, 255, 255);
-    margin: 0% 10%;
-    padding: 2px;
-    border-radius: 10px;
-    border: 2px solid black;
+    margin-top: 50px;
+    margin: 50px 20px;
+    padding: 12px 10px;
+    border-radius: 20px;
+    border: 2px solid #000072;
+    font-size: 16;
 }
 
 .loginpage button:hover {
-    background-color: rgb(206, 206, 206);
-    border: 2px solid rgb(97, 97, 97);
+    background-color: #000072;
+    color: white;
+}
+
+.loginpage h2{
+    text-align: center;
+    font-size: 30;
 }
 
 .post-container{
@@ -133,12 +143,13 @@ main{
 
 .createpost{
     display: flex;
+    padding-top: 30px;
 }
 
 .post-container{
     left: 0;
     top: 0;
-    margin: 100px 50px;
+    margin: 100px 200px;
     justify-content: space-around;
     align-content: space-between;
     flex-wrap: wrap;
@@ -152,43 +163,41 @@ main{
 }
 
 .post{
+    border-radius: 20px;
+    overflow: hidden;
     position: relative;
-    border: 2px solid black;
-    display: flex;
-    height: 400px;
-    width: 400px;
-    padding: 10px;
+    display: inline-flex;
+    height: 360px;
+    width: 360px;
     margin: 50px 40px;
     justify-content: center;
 }
 
 .gradient{
+    border-radius: 20px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 380px;
-    height: 380px;
+    width: 360px;
+    height: 360px;
     background: rgb(0, 0, 0);
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
 }
-/*
-.post:hover .post-prev{
-    width: 500px;
-    height: 500px;
-}
-*/
 
 .post-prev{
+    transition: 1s;
+    display: block;
+    border-radius: 20px;
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 380px;
-    height: 380px;
+    width: 360px;
+    height: 360px;
     object-fit: cover;
-    border-style: solid;
     z-index: -1;
+}
+
+.post-container a:hover .post-prev {
+    border-radius: 20px;
+    transform: scale(1.3);
+    width: 340px;
+    height: 340px;
 }
 
 .post p{
@@ -203,8 +212,6 @@ main{
     text-shadow: 0px 0px 15px #000000;
     
 }
-
-
 
 #message-post{
     padding: 0;
@@ -249,52 +256,110 @@ main{
 
 .post-creation-wrapper li{
     padding: 10px 0;
-    display: flexbox;
+    display: flex;
 }
 
 .post-creation-wrapper li input[name="header"]{
+    border-radius: 20px;
     margin: 20px 0px;
-    padding: 5px;
-    border-radius: 0;
+    padding: 10px;
     font-size: 24px;
     font-weight: bold;
     outline: none;
     border: none;
-    border-bottom: 2px solid #000072;
 }
 
+
 .post-creation-wrapper textarea{
+    border-radius: 24px;
     outline: none;
-    padding: 5px;
+    padding: 10px;
     resize: vertical;
     font-size: 16;
     border: 2px #000072 solid;
 }
 
-/*
-.post-creation-wrapper button{
-    position: absolute;
-    left: 0%;
-    top: 0%;
-    margin-top: 20%;
-    margin-left: 10%;    
-}
-
-
 .post-creation-wrapper button[name="submit"]{
+    border-radius: 20px;
+    border-color: #000072;
+    background-color: white;
+    padding: 10px 20px;
+    font-size: 16;
+    font-weight: 600;
 
 }
 
-*/
+.post-creation-wrapper button[name="submit"]:hover {
+    background-color: #000072;
+    color: white;
+}
 
 .tutorial{
     border: #000072 solid 1px;
+    background-color: white;
     position: absolute;
     width: 200px;
     height: 500px;
     right: 40px;
     padding: 5px;
+    margin-top: 80px;
 }
+
+.post-wrapper{
+    width: 70%;
+    margin: 5% 15%;
+    justify-content: center;
+    font-size: 18;
+    padding-bottom: 30px;
+}
+
+.post-wrapper div{
+    justify-content: center;
+}
+
+.post-wrapper h1{
+    margin: 60px 0;
+    text-align: center;
+    font-size: 50;
+    font-weight: bold;
+}
+
+.post-wrapper p[name="notes"]{
+    text-align: center;
+    font-style: italic;
+}
+
+img[name="post-img"],img[name="text-img"]{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    height: 400px;
+    background-color: white;
+    padding: 20px;
+}
+
+button[name="edit-post-button"],button[name="delete-post-button"]{
+    border-radius: 20px;
+    background-color: white;
+    border: 2px solid #000072;
+    padding: 10px 15px;
+    font-size: 14;
+    font-weight: 600;
+    margin: 10px 20px;
+}
+
+button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
+    background-color: #000072;
+    color: white;
+}
+
+.editor-buttons{
+    margin-right: 10%;
+    margin-bottom: 2%;
+    display: flex;
+    justify-content: end;
+}
+
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
@@ -313,25 +378,33 @@ main{
         visibility: hidden;
     }
 
+    .main-logo{
+        visibility: hidden;
+    }
+
 }
 
 @media only screen and (max-device-width: 800px) and (min-device-width: 280px) {
     .post {
-        border: 2px solid #000072;
         display: flex;
-        height: 350px;
-        width: 350px;
+        height: 320px;
+        width: 320px;
         padding: 10px;
         margin: 10px 40px;
     }
 
+    .main-logo{
+        visibility: hidden;
+    }
+
     .post-prev {
+        border-radius: 20px;
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 350px;
-        height: 35 0px;
+        width: 320px;
+        height: 320px;
         object-fit: cover;
         border-style: solid;
         z-index: -1;
@@ -350,6 +423,7 @@ main{
     }
 
     .gradient {
+        border-radius: 20px;
         position: absolute;
         top: 50%;
         left: 50%;
