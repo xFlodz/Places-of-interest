@@ -30,7 +30,7 @@ def update_images(notes, images_list):
     for i in range(len(images_list)):
         file_name = images_list[i].replace(f'static/post_images/{i}', '')
         file_name = f'static/post_images/{i}' + notes[i] + file_name
-        names = names + file_name + ' '
+        names = names + file_name + '$'
         os.rename(images_list[i], file_name)
     return names
 

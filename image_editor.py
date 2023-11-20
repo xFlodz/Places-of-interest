@@ -1,6 +1,6 @@
 def image_editor(text):
     if text:
-        text = text.split(' ')
+        text = text.split('$')
         text.pop()
     else:
         pass
