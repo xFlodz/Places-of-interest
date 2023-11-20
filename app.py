@@ -171,10 +171,50 @@ def edit_post(address):
             post.header = header
         if error == False:
             db.session.commit()
-            return redirect(f'/post/{address}')
+            return redirect(f'/confirmedit/{address}')
         else:
             flash('Картинка не может быть такого типа', 'danger')
     return render_template('edit_post.html', post=post)
+
+
+@app.route('/confirmedit/<address>', methods=['POST', 'GET'])
+@login_required
+def confirm_edit(address):
+    post = Posts.query.filter_by(address=address).first()
+    text = post.text
+    mini_text = text_editor(text)
+    count = counter(mini_text)
+    count_for_image = text.count('$')
+    if request.method == 'POST':
+        notes = []
+        images = []
+        for i in range(count_for_image):
+            note = request.form.get(f'note{i}')
+            image = request.files[f'image{i}']
+            if image:
+                check = check_type_image(image)
+                if check == False:
+                    flash(f'Неподходящий тип картинки {i+1}', 'danger')
+                else:
+                    name = save_image(image, post.address, i)
+                    images.append(name)
+            if len(note) > 155:
+                flash('Описание больше 155 символов', 'danger')
+            else:
+                notes.append(note)
+        if count_for_image == len(notes):
+            if count_for_image == len(images):
+                delete_images(post)
+                names = update_images(notes, images)
+                post.post_images = names
+                post.visible = 'yes'
+                db.session.commit()
+                return redirect(f'/post/{address}')
+            else:
+                flash('Добавьте картинки', 'danger')
+        else:
+            flash('Добавьте описания', 'danger')
+    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1)
 
 
 @app.route('/deletepost/<address>')
