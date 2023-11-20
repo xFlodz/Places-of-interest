@@ -7,10 +7,6 @@
 {% block content %}
 <main>
     <body>
-        {% if current_user.is_authenticated and current_user.role == 'poster' %}
-        {% else %}
-        <meta http-equiv="refresh" content="0;URL=/" />
-        {%endif%}   
         <div class="post-container">
             {% for post in posts %}
             {% if post.visible == 'yes' %}

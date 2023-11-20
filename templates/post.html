@@ -24,8 +24,10 @@
             {%endfor%}
         </div>
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
-            <nav class="editor-buttons"><a href="/editpost/{{post.address}}"><button name="edit-post-button">Редактировать пост</button></a>
-            <a href="/deletepost/{{post.address}}"><button name="delete-post-button">Удалить пост</button></a></nav>
+            <div class="editor-buttons">
+                <a href="/editpost/{{post.address}}"><button name="edit-post-button">Редактировать пост</button></a>
+                <a href="/deletepost/{{post.address}}"><button name="delete-post-button">Удалить пост</button></a>
+            </div>
         {%endif%}
         </ul>
     </body>

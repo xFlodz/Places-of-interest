@@ -16,12 +16,14 @@
                 {%if mini_text[i]%}
                     <p style="white-space: pre-wrap">{{mini_text[i]}}</p>
                 {%if i <= count_for_image %}
+                <ul class="image-conf">
                     <li><input name="image{{i}}" type="file"></li>
-                    <li><input name="note{{i}}" type="text" placeholder="Введите описание фото" size="50"></li>
+                    <li><input name="note{{i}}" type="text" placeholder="Введите описание фото" size="50" class="image-description-editor"></li>
+                </ul>
                 {%endif%}
                 {%endif%}
             {%endfor%}
-            <button name="submit" type="submit">Создать</button>
+            <button name="submit" type="submit" id="submit-post">Создать</button>
         </div>
     </form>
         </ul>
