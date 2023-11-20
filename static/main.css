@@ -307,7 +307,7 @@ main{
 
 .post-wrapper{
     width: 70%;
-    margin: 5% 15%;
+    margin: 2% 15%;
     justify-content: center;
     font-size: 18;
     padding-bottom: 30px;
@@ -354,10 +354,27 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 }
 
 .editor-buttons{
-    margin-right: 10%;
-    margin-bottom: 2%;
-    display: flex;
+    margin-left: 65%;
+    margin-bottom: 5%;
+    display: block;
     justify-content: end;
+}
+
+.image-description-editor{
+    display: block;
+    background-color: white;
+    border: #000072 2px solid;
+    border-radius: 20px;
+    padding: 10px 15px;
+    font-size: 16;
+    font-style: italic;
+    margin-bottom: 10px;
+}
+
+#submit-post{
+    margin-left: 85%;
+    margin-top: 40px;
+    margin-bottom: 20px;
 }
 
 
