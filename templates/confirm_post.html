@@ -15,10 +15,10 @@
             {% for i in count %}
                 {%if mini_text[i]%}
                     <p style="white-space: pre-wrap">{{mini_text[i]}}</p>
-                {%endif%}
-                {%if images[i]%}
-                    <img src="/{{images[i]}}" name="text-img">
+                {%if i <= count_for_image %}
+                    <li><input name="image{{i}}" type="file"></li>
                     <li><input name="note{{i}}" type="text" placeholder="Введите описание фото" size="50"></li>
+                {%endif%}
                 {%endif%}
             {%endfor%}
             <button name="submit" type="submit">Создать</button>
