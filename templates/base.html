@@ -29,6 +29,7 @@
             
             <nav>
                 <ul class="menu">
+                    <li><a href="/allposts"><button>Все посты</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/register"><button>Зарегистрировать</button></a></li>
                     {%else%}
