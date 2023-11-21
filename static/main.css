@@ -346,6 +346,7 @@ button[name="edit-post-button"],button[name="delete-post-button"]{
     font-size: 14;
     font-weight: 600;
     margin: 10px 20px;
+    width: 200px;
 }
 
 button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
