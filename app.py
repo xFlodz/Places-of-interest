@@ -229,7 +229,6 @@ def delete_post(address):
 
 
 @app.route('/allposts')
-@login_required
 def all_posts():
     posts = Posts.query.all()
     return render_template('all_posts.html', posts=posts)
