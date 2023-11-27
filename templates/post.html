@@ -13,7 +13,7 @@
 
             {% for i in count %}
                 {%if mini_text[i]%}
-                    <p style="white-space: pre-wrap">{{mini_text[i]}}</p>
+                    <p style="white-space: pre-wrap; text-align: justify;">{{mini_text[i]}}</p>
                 {%endif%}
                 {%if images[i]%}
                     <img src="/{{images[i]}}" name="text-img">

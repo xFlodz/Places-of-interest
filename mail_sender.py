@@ -8,7 +8,7 @@ def mailsend(email, password):
     recipients.append(email)
     server = 'smtp.mail.ru'
     user = 'placesofinterest@mail.ru'
-    password = '**'
+    password = 'TgKSihm8fEfL8bztshFQ'
 
 
     sender = 'placesofinterest@mail.ru'

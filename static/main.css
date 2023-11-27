@@ -333,7 +333,7 @@ img[name="post-img"],img[name="text-img"]{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    height: 400px;
+    width: 70%;
     background-color: white;
     padding: 20px;
 }

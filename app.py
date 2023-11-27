@@ -54,6 +54,8 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/allposts')
+            else:
+                flash('Неверный пароль', 'danger')
         else:
             flash('Пользователь не существует', 'danger')
 
