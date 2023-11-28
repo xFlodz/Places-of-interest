@@ -275,8 +275,8 @@ def all_posts():
                 post_tags = PostTags.query.filter_by(tag=tag).all()
                 for post in post_tags:
                     post_list.append(post)
-        if len(post_list) == 0:
-            flash('Постов с таким тегом не существует', 'danger')
+                if not post_tags:
+                    flash('Постов с таким тегом не существует', 'danger')
         else:
             post_list_non_filtered = []
             post_list_filtered = []
