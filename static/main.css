@@ -482,12 +482,12 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     align-items: center;
     list-style: none;
     display: flex;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 .post-tags li{
     color: #000000;
-    display: block;
+    display: inline;
     border-radius: 20px;
     font-size: 18px;
     background-color: white;
@@ -500,11 +500,6 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     background-color: #000072;
     color: white;
 }
-
-.post-tags a{
-    text-decoration: none;
-}
-
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
