@@ -8,6 +8,14 @@
 <main>
     <body>
         <div class="post-container">
+            <div class="filter">
+                <ul>
+                    <li><input type="checkbox" placeholder="one">один</li>
+                    <li><input type="checkbox" placeholder="two">два</li>
+                    <li><input type="checkbox" placeholder="three">три</li>
+                </ul>
+                <button>Подтвердить</button>
+            </div>
             {% for post in posts %}
             {% if post.visible == 'yes' %}
             <a href="/post/{{post.address}}">
