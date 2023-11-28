@@ -297,8 +297,11 @@ def all_posts():
             post_add = Posts.query.filter_by(address=post.address).first()
             filtered_posts.append(post_add)
 
-    if filtered_posts:
-        posts = filtered_posts
+    if request.method == 'POST':
+        if filtered_posts:
+            posts = filtered_posts
+        else:
+            flash('Постов с таким набором тегов нет', 'danger')
 
     return render_template('all_posts.html', posts=posts, tags=tags)
 
