@@ -73,6 +73,8 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/allposts')
+            else:
+                flash('Неверный пароль', 'danger')
         else:
             flash('Пользователь не существует', 'danger')
 
@@ -257,7 +259,11 @@ def delete_post(address):
     return redirect('/')
 
 
+<<<<<<< HEAD
 @app.route('/allposts', methods=['POST', 'GET'])
+=======
+@app.route('/allposts')
+>>>>>>> 852d0a2fc7fc4ea00e37c565bde2a5d5d5c0f484
 def all_posts():
     posts = Posts.query.all()
     tags = Tags.query.all()

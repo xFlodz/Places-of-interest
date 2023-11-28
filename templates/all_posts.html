@@ -7,6 +7,7 @@
 {% block content %}
 <main>
     <body>
+<<<<<<< HEAD
     <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
     {%if tags %}
         <div class="post-container">
@@ -19,6 +20,17 @@
                 <button>Подтвердить</button>
             </div>
     {%endif%}
+=======
+        <div class="post-container">
+            <div class="filter">
+                <ul>
+                    <li><input type="checkbox" placeholder="one">один</li>
+                    <li><input type="checkbox" placeholder="two">два</li>
+                    <li><input type="checkbox" placeholder="three">три</li>
+                </ul>
+                <button>Подтвердить</button>
+            </div>
+>>>>>>> 852d0a2fc7fc4ea00e37c565bde2a5d5d5c0f484
             {% for post in posts %}
             {% if post.visible == 'yes' %}
             <a href="/post/{{post.address}}">

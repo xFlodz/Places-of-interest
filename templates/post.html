@@ -27,9 +27,17 @@
                 {%endif%}
             {%endfor%}
         </div>
+<<<<<<< HEAD
             {%for tag in tags %}
             <h4>{{tag}}</h4>
             {%endfor%}
+=======
+        <ul class="post-tags">
+            <a href="#"><li>Tag 1</li></a>
+            <a href="#"><li>Tag 2</li></a>
+            <a href="#"><li>Tag 3</li></a>
+        </ul>
+>>>>>>> 852d0a2fc7fc4ea00e37c565bde2a5d5d5c0f484
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
             <div class="editor-buttons">
                 <a href="/editpost/{{post.address}}"><button name="edit-post-button">Редактировать пост</button></a>
