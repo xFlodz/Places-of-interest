@@ -275,8 +275,6 @@ def all_posts():
                 post_tags = PostTags.query.filter_by(tag=tag).all()
                 for post in post_tags:
                     post_list.append(post)
-                if not post_tags:
-                    flash('Постов с таким тегом не существует', 'danger')
         else:
             post_list_non_filtered = []
             post_list_filtered = []
@@ -299,7 +297,11 @@ def all_posts():
 
     if request.method == 'POST':
         if filtered_posts:
-            posts = filtered_posts
+            print(filtered_posts)
+            if filtered_posts != [None]:
+                posts = filtered_posts
+            else:
+                flash('Постов с таким тегом не существует', 'danger')
         else:
             flash('Постов с таким набором тегов нет', 'danger')
 
