@@ -1,5 +1,5 @@
 from flask import render_template, flash, request, redirect
-from models import Users, Posts
+from models import Users, Posts, Tags, PostTags
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -15,7 +15,7 @@ from mail_sender import mailsend
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect('/allposts')
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -37,6 +37,47 @@ def register():
     return render_template('register.html')
 
 
+@app.route('/add_tag', methods=['POST', 'GET'])
+@login_required
+def add_tag():
+    if request.method == 'POST':
+        tag = request.form.get('tag')
+        if tag:
+            check_tag = Tags.query.filter_by(nametag=tag).first()
+            if check_tag:
+                flash('Такой тег уже существует', 'danger')
+            else:
+                new_tag = Tags(nametag=tag)
+                db.session.add(new_tag)
+                db.session.commit()
+                flash('Тег успешно добавлен', 'success')
+        else:
+            flash('Введите тег', 'danger')
+    return render_template('add_tags.html')
+
+
+@app.route('/delete_tags', methods=['GET', 'POST'])
+@login_required
+def delete_tags():
+    tags = Tags.query.all()
+    return render_template('delete_tags.html', tags=tags)
+
+
+@app.route('/delete_tags/<tag>')
+@login_required
+def delete_tags_id(tag):
+    posts_with_this_tag = PostTags.query.filter_by(tag=tag).all()
+    print(posts_with_this_tag)
+    tag_in_db = Tags.query.filter_by(nametag=tag).first()
+    print(tag)
+    db.session.delete(tag_in_db)
+    for post in posts_with_this_tag:
+        tag_post = PostTags.query.filter_by(tag=tag).first()
+        db.session.delete(tag_post)
+    db.session.commit()
+    return redirect('/')
+
+
 @app.route('/logout')
 @login_required
 def logout():
@@ -54,8 +95,6 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/allposts')
-            else:
-                flash('Неверный пароль', 'danger')
         else:
             flash('Пользователь не существует', 'danger')
 
@@ -72,20 +111,30 @@ def post(address):
         count = counter(mini_text)
         notes = get_notes(images_list, post.address)
         images_list = image_editor(post.post_images)
+        tags = PostTags.query.filter_by(address=address).all()
+        tags_list = []
+        for tag in tags:
+            tags_list.append(tag.tag)
+        print(tags_list)
     else:
         return redirect('/')
-    return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count)
+    return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count, tags=tags_list)
 
 
 @app.route('/createpost', methods=['POST', 'GET'])
 @login_required
 def create_post():
+    tags = Tags.query.all()
     if request.method == 'POST':
         main_image = request.files['main-image']
         header = request.form.get('header')
         text = request.form.get('text')
         address = create_address()
-
+        for tag in tags:
+            if request.form.get(f'{tag.nametag}'):
+                post_tag = PostTags(address=address, tag=tag.nametag)
+                db.session.add(post_tag)
+                db.session.commit()
         if header:
             if text:
                 if main_image:
@@ -108,7 +157,7 @@ def create_post():
 
 
 
-    return render_template('create_post.html')
+    return render_template('create_post.html', tags=tags)
 
 
 @app.route('/confirmpost/<address>', methods=['POST', 'GET'])
@@ -227,13 +276,58 @@ def delete_post(address):
     delete_main(post)
     db.session.delete(post)
     db.session.commit()
-    return redirect('/')
+    return redirect('/allposts')
 
 
-@app.route('/allposts')
+@app.route('/allposts', methods=['POST', 'GET'])
 def all_posts():
     posts = Posts.query.all()
-    return render_template('all_posts.html', posts=posts)
+    tags = Tags.query.all()
+    tags_list = []
+    filtered_posts = []
+    post_list = []
+    if request.method == 'POST':
+        for tag in tags:
+            if request.form.get(f'{tag.nametag}'):
+                tags_list.append(tag.nametag)
+
+    if tags_list:
+        if len(tags_list) == 1:
+            for tag in tags_list:
+                post_tags = PostTags.query.filter_by(tag=tag).all()
+                for post in post_tags:
+                    post_list.append(post)
+        else:
+            post_list_non_filtered = []
+            post_list_filtered = []
+            for tag in tags_list:
+                post_tags = PostTags.query.filter_by(tag=tag).all()
+                for post in post_tags:
+                    post_list_non_filtered.append(post.address)
+            for i in post_list_non_filtered:
+                if post_list_non_filtered.count(i) == len(tags_list):
+                    if i not in post_list_filtered:
+                        post_list_filtered.append(i)
+            for i in post_list_filtered:
+                post_add = PostTags.query.filter_by(address=i).first()
+                post_list.append(post_add)
+
+    if post_list:
+        for post in post_list:
+            post_add = Posts.query.filter_by(address=post.address).first()
+            filtered_posts.append(post_add)
+
+    if request.method == 'POST':
+        if filtered_posts:
+            print(filtered_posts)
+            if filtered_posts != [None]:
+                posts = filtered_posts
+            else:
+                flash('Постов с таким тегом не существует', 'danger')
+        else:
+            flash('Постов с таким набором тегов нет', 'danger')
+
+    return render_template('all_posts.html', posts=posts, tags=tags)
 
 
 @manager.user_loader

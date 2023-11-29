@@ -15,4 +15,3 @@ def get_notes(image_list, address):
         note = image_list[i].split('$')
         notes.append(note[0])
     return notes
-

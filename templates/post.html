@@ -8,20 +8,31 @@
 <main>
     <body>
         <div class="post-wrapper">
-            <div><img src="/{{post.main_image}}" name="post-img"></div>
+            <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
+                <img src="/{{post.main_image}}" name="post-img" alt="post-img">
+            </div>
             <h1>{{post.header}}</h1>
-
+            
             {% for i in count %}
                 {%if mini_text[i]%}
                     <p style="white-space: pre-wrap; text-align: justify;">{{mini_text[i]}}</p>
                 {%endif%}
                 {%if images[i]%}
+                <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
                     <img src="/{{images[i]}}" name="text-img">
+                </div>
                 {%endif%}
                 {%if notes[i]%}
                     <p name="notes">{{notes[i]}}</p>
                 {%endif%}
             {%endfor%}
+        </div>
+        <div class="post-tags">
+            <ul>
+                {%for tag in tags %}
+                    <li>{{tag}}</li>
+                {%endfor%}
+            </ul>
         </div>
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
             <div class="editor-buttons">
