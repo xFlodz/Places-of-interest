@@ -56,6 +56,7 @@ def add_tag():
     return render_template('add_tags.html')
 
 
+<<<<<<< HEAD
 @app.route('/delete_tags', methods=['GET', 'POST'])
 @login_required
 def delete_tags():
@@ -78,6 +79,8 @@ def delete_tags_id(tag):
     return redirect('/')
 
 
+=======
+>>>>>>> 2ccfbb98b655d8eafe8cd059bcc0672a2856c81c
 @app.route('/logout')
 @login_required
 def logout():

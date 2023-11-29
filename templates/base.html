@@ -32,7 +32,10 @@
                     <li><a href="/allposts"><button>Все посты</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/add_tag"><button>Добавить тег</button></a></li>
+<<<<<<< HEAD
                     <li><a href="/delete_tags"><button>Удалить тег</button></a></li>
+=======
+>>>>>>> 2ccfbb98b655d8eafe8cd059bcc0672a2856c81c
                     {%endif%}
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/register"><button>Зарегистрировать</button></a></li>
