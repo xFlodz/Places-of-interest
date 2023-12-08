@@ -54,7 +54,7 @@ def add_tag():
                 flash('Тег успешно добавлен', 'success')
         else:
             flash('Введите тег', 'danger')
-    return render_template('add_tags.html', tags=tags)
+    return render_template('tags.html', tags=tags)
 
 
 @app.route('/delete_tags/<tag>')
