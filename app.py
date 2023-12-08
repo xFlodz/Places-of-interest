@@ -70,6 +70,28 @@ def delete_tags_id(tag):
     return redirect('/add_tag')
 
 
+@app.route('/delete_tags', methods=['GET', 'POST'])
+@login_required
+def delete_tags():
+    tags = Tags.query.all()
+    return render_template('delete_tags.html', tags=tags)
+
+
+@app.route('/delete_tags/<tag>')
+@login_required
+def delete_tags_id(tag):
+    posts_with_this_tag = PostTags.query.filter_by(tag=tag).all()
+    print(posts_with_this_tag)
+    tag_in_db = Tags.query.filter_by(nametag=tag).first()
+    print(tag)
+    db.session.delete(tag_in_db)
+    for post in posts_with_this_tag:
+        tag_post = PostTags.query.filter_by(tag=tag).first()
+        db.session.delete(tag_post)
+    db.session.commit()
+    return redirect('/')
+
+
 @app.route('/logout')
 @login_required
 def logout():
