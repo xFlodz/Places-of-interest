@@ -68,7 +68,7 @@ def delete_tags_id(tag):
         tag_post = PostTags.query.filter_by(tag=tag).first()
         db.session.delete(tag_post)
     db.session.commit()
-    return redirect('/add_tag')
+    return redirect('/tags')
 
 
 @app.route('/logout')
