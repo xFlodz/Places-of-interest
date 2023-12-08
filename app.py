@@ -52,9 +52,10 @@ def add_tag():
                 db.session.add(new_tag)
                 db.session.commit()
                 flash('Тег успешно добавлен', 'success')
+                return redirect('/tags')
         else:
             flash('Введите тег', 'danger')
-    return render_template('add_tags.html', tags=tags)
+    return render_template('tags.html', tags=tags)
 
 
 @app.route('/delete_tags/<tag>')

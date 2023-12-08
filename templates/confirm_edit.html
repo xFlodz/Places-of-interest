@@ -6,7 +6,7 @@
 
 {% block content %}
 <main>
-    <h1>Редактирование статьи</h1>
+    <h1 style="text-align: center;">Редактирование статьи</h1>
     <body>
     <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
         <div class="post-wrapper">
@@ -26,17 +26,16 @@
                 {%endif%}
                 {%endif%}
             {%endfor%}
-            <button name="submit" type="submit" id="submit-post">Создать</button>
-        </div>
-         <div class="post-tags">
-            <ul>
-                {%for tag in tags %}
-                    <li>{{tag}}</li>
-                {%endfor%}
-            </ul>
+            <div class="post-tags">
+                <ul>
+                    {%for tag in tags %}
+                        <li>{{tag}}</li>
+                    {%endfor%}
+                </ul>
+            </div>
+            <button name="submit" type="submit" id="submit-post">Сохранить</button>
         </div>
     </form>
-        </ul>
     </body>
 </main>
 

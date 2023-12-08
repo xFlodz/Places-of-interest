@@ -10,7 +10,7 @@
 {% if current_user.is_authenticated and current_user.role == 'poster' %}
 
 <main>
-    <h1>Создание статьи</h1>
+    <h1 style="text-align: center;">Создание статьи</h1>
     <body>
     <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
  {%if tags %}
