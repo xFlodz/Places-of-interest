@@ -168,8 +168,7 @@ main{
     overflow: hidden;
     position: relative;
     display: inline-flex;
-    height: 320px;
-    width: 320px;
+    object-fit: contain;
     margin: 50px 40px;
     justify-content: center;
 }
@@ -359,46 +358,6 @@ img[name="text-img"], img[name="post-img"]{
     height: 90%;
 }
 
-
-
-/*
-.pop-up{
-    z-index: 9999;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #0000009d;
-    display: none;
-}
-
-.pop-up img{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border: 5px white solid;
-    border: 20px;
-    width: 70%;
-}
-
-.pop-up span{
-    position: fixed;
-    top: 80px;
-    right: 80px;
-    width: 40px;
-    height: 40px;
-    background: white;
-    font-size: 50px;
-    font-weight: 900px;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 50%;
-    cursor: pointer;
-}
-*/
-
 button[name="edit-post-button"],button[name="delete-post-button"]{
     border-radius: 20px;
     background-color: white;
@@ -482,12 +441,12 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     align-items: center;
     list-style: none;
     display: flex;
-    margin-bottom: 5%;
+    margin-bottom: 2%;
 }
 
 .post-tags li{
     color: #000000;
-    display: block;
+    display: inline;
     border-radius: 20px;
     font-size: 18px;
     background-color: white;
@@ -500,11 +459,6 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     background-color: #000072;
     color: white;
 }
-
-.post-tags a{
-    text-decoration: none;
-}
-
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
@@ -530,56 +484,26 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 }
 
 @media only screen and (max-device-width: 800px) and (min-device-width: 280px) {
-    .post {
-        display: flex;
-        height: 320px;
-        width: 320px;
-        padding: 10px;
-        margin: 10px 40px;
-    }
+
 
     .main-logo{
         visibility: hidden;
     }
 
-    .post-prev {
-        border-radius: 20px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 320px;
-        height: 320px;
-        object-fit: cover;
-        border-style: solid;
-        z-index: -1;
-    }
-
-    .post-container {
-        left: 0;
-        top: 0;
-        margin: 100px 50px;
-        justify-content: space-around;
-        align-content: space-around;
-        flex-wrap: wrap;
-        height: 100%;
-        flex-direction: row;
-        padding-bottom: 200px;
-    }
-
-    .gradient {
-        border-radius: 20px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 320px;
-        height: 320px;
-        background: rgb(0, 0, 0);
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.651) 1%, rgba(0, 0, 0, 0) 40%);
-    }
-
     .tutorial{
         visibility: hidden;
+    }
+    
+    .post-head-image-pop{
+    margin: 0;
+    padding-right: 50%;
+    padding-bottom: 10%;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+    background-color: #0000008d;
     }
 }
