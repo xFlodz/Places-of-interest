@@ -57,6 +57,19 @@ def add_tag():
     return render_template('add_tags.html', tags=tags)
 
 
+@app.route('/delete_tags/<tag>')
+@login_required
+def delete_tags_id(tag):
+    posts_with_this_tag = PostTags.query.filter_by(tag=tag).all()
+    tag_in_db = Tags.query.filter_by(nametag=tag).first()
+    db.session.delete(tag_in_db)
+    for post in posts_with_this_tag:
+        tag_post = PostTags.query.filter_by(tag=tag).first()
+        db.session.delete(tag_post)
+    db.session.commit()
+    return redirect('/add_tag')
+
+
 @app.route('/logout')
 @login_required
 def logout():
