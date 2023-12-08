@@ -18,6 +18,7 @@
                     <button name="submit" type="submit" style="margin-top: 20px;
                     border: #000072 2px solid;">Создать</button>
               </div>
+            {%if tags%}
                 <h2 style="text-align: center; margin-top: 20%;">Удаление тегов</h2>
               <ul class="delete-tags">
                 {%for tag in tags%}
@@ -25,6 +26,7 @@
                       <a href="/delete_tags/{{tag.nametag}}">{{tag.nametag}}</a>
                     </li>
                 {%endfor%}
+            {%endif%}
               </ul>
             </div>
         </form>
