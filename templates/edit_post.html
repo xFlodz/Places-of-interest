@@ -10,13 +10,27 @@
 {% if current_user.is_authenticated and current_user.role == 'poster' %}
 
 <main>
-
+    <h1>Редактирование статьи</h1>
     <body>
         <div class="tutorial">
             <a>Текст с правилами по созданию поста</a>
         </div>
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+                {%if tags %}
+                <div class="post-container">
+                    <div class="filter">
+                        <ul>
+                            {%for tag in tags %}
+                            {%if tag in titps%}
+                                <li><input type="checkbox" name="{{tag}}" checked>{{tag}}</li>
+                            {%else%}
+                                <li><input type="checkbox" name="{{tag}}">{{tag}}</li>
+                            {%endif%}
+                            {%endfor%}
+                        </ul>
+                    </div>
+                {%endif%}
                 <ul>
                     <li><input name="header" type="text" size="50" value="{{post.header}}"></li>
                     <li><input name="main-image" type="file"></li>

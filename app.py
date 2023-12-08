@@ -15,7 +15,7 @@ from mail_sender import mailsend
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return redirect('/allposts')
 
 
 @app.route('/register', methods=['POST', 'GET'])
@@ -37,9 +37,10 @@ def register():
     return render_template('register.html')
 
 
-@app.route('/add_tag', methods=['POST', 'GET'])
+@app.route('/tags', methods=['POST', 'GET'])
 @login_required
 def add_tag():
+    tags = Tags.query.all()
     if request.method == 'POST':
         tag = request.form.get('tag')
         if tag:
@@ -53,7 +54,20 @@ def add_tag():
                 flash('Тег успешно добавлен', 'success')
         else:
             flash('Введите тег', 'danger')
-    return render_template('add_tags.html')
+    return render_template('add_tags.html', tags=tags)
+
+
+@app.route('/delete_tags/<tag>')
+@login_required
+def delete_tags_id(tag):
+    posts_with_this_tag = PostTags.query.filter_by(tag=tag).all()
+    tag_in_db = Tags.query.filter_by(nametag=tag).first()
+    db.session.delete(tag_in_db)
+    for post in posts_with_this_tag:
+        tag_post = PostTags.query.filter_by(tag=tag).first()
+        db.session.delete(tag_post)
+    db.session.commit()
+    return redirect('/add_tag')
 
 
 @app.route('/logout')
@@ -93,7 +107,6 @@ def post(address):
         tags_list = []
         for tag in tags:
             tags_list.append(tag.tag)
-        print(tags_list)
     else:
         return redirect('/')
     return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count, tags=tags_list)
@@ -141,6 +154,10 @@ def create_post():
 @app.route('/confirmpost/<address>', methods=['POST', 'GET'])
 @login_required
 def confirm_post(address):
+    tags = PostTags.query.filter_by(address=address).all()
+    tags_list = []
+    for tag in tags:
+        tags_list.append(tag.tag)
     post = Posts.query.filter_by(address=address).first()
     text = post.text
     mini_text = text_editor(text)
@@ -174,14 +191,41 @@ def confirm_post(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1)
+    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
 @login_required
 def edit_post(address):
+    tags = Tags.query.all()
+    tags_list = []
+    tags_in_this_post_list = []
+    for i in tags:
+        tags_list.append(i.nametag)
+    tags_in_this_post = PostTags.query.filter_by(address=address).all()
+    for i in tags_in_this_post:
+        tags_in_this_post_list.append(i.tag)
     post = Posts.query.filter_by(address=address).first()
+    new_tags = []
     if request.method == 'POST':
+        for tag in tags:
+            if request.form.get(f'{tag.nametag}'):
+                new_tags.append(tag.nametag)
+        if len(new_tags) >= 1:
+            delete_tags = PostTags.query.filter_by(address=address).all()
+            if delete_tags:
+                for i in delete_tags:
+                    db.session.delete(i)
+                    db.session.commit()
+            for i in new_tags:
+                post_tag = PostTags(address=address, tag=i)
+                db.session.add(post_tag)
+                db.session.commit()
+        else:
+            delete_tags = PostTags.query.filter_by(address=address).all()
+            for i in delete_tags:
+                db.session.delete(i)
+                db.session.commit()
         main_image = request.files['main-image']
         header = request.form.get('header')
         text = request.form.get('text')
@@ -203,12 +247,16 @@ def edit_post(address):
             return redirect(f'/confirmedit/{address}')
         else:
             flash('Картинка не может быть такого типа', 'danger')
-    return render_template('edit_post.html', post=post)
+    return render_template('edit_post.html', post=post, tags=tags_list, titps=tags_in_this_post_list)
 
 
 @app.route('/confirmedit/<address>', methods=['POST', 'GET'])
 @login_required
 def confirm_edit(address):
+    tags = PostTags.query.filter_by(address=address).all()
+    tags_list = []
+    for tag in tags:
+        tags_list.append(tag.tag)
     post = Posts.query.filter_by(address=address).first()
     text = post.text
     mini_text = text_editor(text)
@@ -243,7 +291,7 @@ def confirm_edit(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1)
+    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list)
 
 
 @app.route('/deletepost/<address>')
@@ -254,7 +302,7 @@ def delete_post(address):
     delete_main(post)
     db.session.delete(post)
     db.session.commit()
-    return redirect('/')
+    return redirect('/allposts')
 
 
 @app.route('/allposts', methods=['POST', 'GET'])

@@ -9,7 +9,8 @@
 {% block content %}
 {% if current_user.is_authenticated and current_user.role == 'poster' %}
 
-<main>    
+<main>
+    <h1>Создание статьи</h1>
     <body>
     <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
  {%if tags %}
@@ -17,13 +18,13 @@
             <div class="filter">
                 <ul>
                     {%for tag in tags %}
-                     <li><input type="checkbox" name="{{tag.nametag}}">{{tag.nametag}}</li>
+                        <li><input type="checkbox" name="{{tag.nametag}}">{{tag.nametag}}</li>
                     {%endfor%}
                 </ul>
             </div>
     {%endif%}
         <div class="tutorial">
-          <a>Текст с правилами по созданию поста</a>
+          <a>Введите "$" чтоб вставить картинку в текст</a>
         </div>
         <div class="createpost">
               <ul>

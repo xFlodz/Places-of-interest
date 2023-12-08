@@ -8,6 +8,7 @@
 {% if current_user.is_authenticated and current_user.role == 'admin' %}
 
 <main>
+    <h1>Изменение тегов</h1>
     <body>
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
@@ -18,6 +19,10 @@
                 <button name="submit" type="submit" style="margin-top: 20px;
                 border: #000072 2px solid;">Создать</button></li>
               </ul>
+                {%for tag in tags%}
+                  <h4>{{tag.nametag}}</h4>
+                  <a href="/delete_tags/{{tag.nametag}}"><button>Удалить</button></a>
+                {%endfor%}
             </form>
         </div>
     </body>
