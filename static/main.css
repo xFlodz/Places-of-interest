@@ -149,13 +149,13 @@ main{
 .post-container{
     left: 0;
     top: 0;
-    margin: 100px 200px;
+    margin: 40px 200px;
     justify-content: space-around;
     align-content: space-between;
     flex-wrap: wrap;
     height: 100%;
     flex-direction: row;
-    padding-bottom: 200px;
+    padding-bottom: 20px;
     padding-left: 100px;
 }
 
@@ -458,6 +458,50 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 .post-tags li:hover{
     background-color: #000072;
     color: white;
+}
+
+.tags-wrap{
+    flex-direction: column;
+    align-items: center;
+}
+
+.delete-tags{
+    align-items: center;
+    padding: 2% 5%;
+    flex-direction: row;
+}
+
+.delete-tags ul{
+    justify-content: space-between;
+    display: flex;
+}
+
+.delete-tags li{
+    align-items: center;
+    justify-items: center;
+    display: list-item;
+    list-style: none;
+}
+
+.delete-tags a{
+    display: flex;
+    width: 90%;
+    border: #000072 solid 2px;
+    border-radius: 20px;
+    color: #000000;
+    text-decoration: none;
+    background-color: white;
+    text-align: center;
+    align-items: center;
+    font-size: 20;
+    margin: 2%;
+    padding: 2%;
+
+}
+
+.delete-tags a:hover{
+    color: white;
+    background-color: #b80000;
 }
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
