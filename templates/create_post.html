@@ -13,8 +13,7 @@
     <h1 style="text-align: center;">Создание статьи</h1>
     <body>
     <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
- {%if tags %}
-        <div class="post-container">
+    {%if tags %}
             <div class="filter">
                 <ul>
                     {%for tag in tags %}
@@ -33,8 +32,8 @@
                 <li><textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи" cols="120" rows="20"></textarea></li>
                 <button name="submit" type="submit">Далее</button></li>
               </ul>
-    </form>
         </div>
+    </form>
     </body>
 </main>
 {% else %}
