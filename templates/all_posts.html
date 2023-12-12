@@ -14,7 +14,7 @@
         </div>
         <div class="filter">
             <ul>
-                <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+                <form method="post" enctype="multipart/form-data">
                 {%for tag in tags %}
                 <li><input type="checkbox" name="{{tag.nametag}}" placeholder="{{tag.nametag}}">{{tag.nametag}}</li>
                 {%endfor%}
