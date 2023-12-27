@@ -1,10 +1,7 @@
 from flask import render_template, flash, request, redirect
 from models import Users, Posts, Tags, PostTags, PostImages
-<<<<<<< HEAD
 from flask_login import login_required, login_user, logout_user, current_user
-=======
 from flask_login import login_required, login_user, logout_user
->>>>>>> 01d94ed0f2e074bdc37b23343e21ef6dccace049
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
 
@@ -12,11 +9,8 @@ from sqlalchemy import desc
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-<<<<<<< HEAD
 from save_picture import save_image, save_main, check_type_image, upload_images
-=======
 from save_picture import save_image, save_main, check_type_image, update_images, upload_images
->>>>>>> 01d94ed0f2e074bdc37b23343e21ef6dccace049
 from text_editor import text_editor, get_notes
 from image_editor import image_editor
 from counter import counter
