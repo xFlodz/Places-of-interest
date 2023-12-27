@@ -419,13 +419,14 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 .filter li{
     padding-top: 10px;
     font-size: 20;
+    word-wrap: break-word;
 }
 
 .filter button{
     padding: 10px;
     border-radius: 20px;
     background-color: white;
-    width: 200px;
+    width: 150px;
     border: #000072 2px solid;
     margin: 15px 25px;
     font-size: 16;
@@ -504,6 +505,58 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     background-color: #b80000;
 }
 
+<<<<<<< Updated upstream
+=======
+.dropdown{
+    position: absolute;
+}
+
+.dropdown + div{
+    display: none;
+}
+
+.dropdown button{
+    padding: 5px 10px;
+    text-align: center;
+    width: 150px;
+    border: #000072 solid 2px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 18;
+}
+
+.dropdown button:hover{
+    background-color: #000072;
+    color: white;
+}
+
+.active button {
+    padding: 5px 10px;
+    text-align: center;
+    width: 200px;
+    border: #000072 solid 2px;
+    border-radius: 20px;
+    background-color: white;
+    font-size: 18;
+}
+
+.active button:hover {
+    background-color: #000072;
+    color: white;
+}
+
+.active{
+    position: absolute;
+    width: 100px;
+    height: 50px;
+}
+
+.active + div{
+    width: 200px;
+    position: absolute;
+    display: block;
+}
+>>>>>>> Stashed changes
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
         width: 150px;
@@ -550,4 +603,8 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     z-index: 9999;
     background-color: #0000008d;
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

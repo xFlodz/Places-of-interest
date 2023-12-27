@@ -1,12 +1,12 @@
 from flask import render_template, flash, request, redirect
-from models import Users, Posts, Tags, PostTags
+from models import Users, Posts, Tags, PostTags, PostImages
 from flask_login import login_required, login_user, logout_user
 from werkzeug.security import check_password_hash, generate_password_hash
 
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-from save_picture import save_image, save_main, check_type_image, update_images
+from save_picture import save_image, save_main, check_type_image, update_images, upload_images
 from text_editor import text_editor, get_notes
 from image_editor import image_editor
 from counter import counter
@@ -100,10 +100,10 @@ def post(address):
     if post:
         text = post.text
         mini_text = text_editor(text)
-        images_list = post.post_images
+        images_list = PostImages.query.filter_by(address=address).all()
         count = counter(mini_text)
-        notes = get_notes(images_list, post.address)
-        images_list = image_editor(post.post_images)
+        notes = get_notes(images_list)
+        images_list = image_editor(images_list)
         tags = PostTags.query.filter_by(address=address).all()
         tags_list = []
         for tag in tags:
@@ -183,8 +183,7 @@ def confirm_post(address):
                 notes.append(note)
         if count_for_image == len(notes):
             if count_for_image == len(images):
-                names = update_images(notes, images)
-                post.post_images = names
+                upload_images(notes, images, address)
                 post.visible = 'yes'
                 db.session.commit()
                 return redirect(f'/post/{address}')
@@ -282,11 +281,11 @@ def confirm_edit(address):
                 notes.append(note)
         if count_for_image == len(notes):
             if count_for_image == len(images):
-                delete_images(post)
-                names = update_images(notes, images)
-                post.post_images = names
-                post.visible = 'yes'
-                db.session.commit()
+                images_in_this_post = PostImages.query.filter_by(address=address).all()
+                for i in images_in_this_post:
+                    db.session.delete(i)
+                    db.session.commit()
+                upload_images(notes, images, address)
                 return redirect(f'/post/{address}')
             else:
                 flash('Добавьте картинки', 'danger')

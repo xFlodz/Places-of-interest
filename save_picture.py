@@ -1,4 +1,6 @@
 import os
+from models import PostImages
+from __init__ import db
 ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png']
 
 
@@ -33,4 +35,13 @@ def update_images(notes, images_list):
         names = names + file_name + '$'
         os.rename(images_list[i], file_name)
     return names
+
+def upload_images(notes, images_list, address):
+    names = ''
+    for i in range(len(images_list)):
+        file_name = images_list[i]
+        note = notes[i]
+        image = PostImages(address=address, note=note, path_to_image=file_name)
+        db.session.add(image)
+        db.session.commit()
 
