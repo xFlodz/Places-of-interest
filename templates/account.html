@@ -7,22 +7,20 @@
 
 
 {% block content %}
-{% if current_user.is_authenticated and current_user.role == 'admin' %}
+{% if (current_user.is_authenticated and current_user.role == 'poster') or (current_user.is_authenticated and current_user.role == 'admin') %}
 
 <main>
-    <h1 style="text-align: center;">Регистрация редакторов</h1>
+    <h1 style="text-align: center;">Изменение имени</h1>
     <body>
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
               <ul>
-                <li><input name="login" type="text" placeholder="Введите почту" size="50"
-                    style="padding: 8px; background-color: white; border-radius: 20px;
-                    border: #000072 2px solid; font-size: 16;"></li>
-                <li><input name="name" type="text" placeholder="Введите ФИО пользователя" size="50"
+
+                <li><input name="name" type="text" value="{{name}}" size="50"
                     style="padding: 8px; background-color: white; border-radius: 20px;
                     border: #000072 2px solid; font-size: 16;"></li>
                 <button name="submit" type="submit" style="margin-top: 20px;
-                border: #000072 2px solid;">Создать</button></li>
+                border: #000072 2px solid;">Изменить имя</button></li>
               </ul>
             </form>
         </div>

@@ -8,18 +8,24 @@
 <main>
     <h1 style="text-align: center;">Исторические статьи</h1>
     <body>
-    <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
     {%if tags %}
-        <div class="post-container">
-            <div class="filter">
-                <ul>
-                    {%for tag in tags %}
-                    <li><input type="checkbox" name="{{tag.nametag}}" placeholder="{{tag.nametag}}">{{tag.nametag}}</li>
-                    {%endfor%}
-                </ul>
-                <button>Подтвердить</button>
-            </div>
+        <div class="dropdown" onclick="this.className = (this.className =='dropdown' ? 'active' : 'dropdown')">
+            <button>Фильтр</button>
+        </div>
+        <div class="filter">
+            <ul>
+                <form method="post" enctype="multipart/form-data">
+                {%for tag in tags %}
+                <li><input type="checkbox" name="{{tag.nametag}}" placeholder="{{tag.nametag}}">{{tag.nametag}}</li>
+                {%endfor%}
+            </ul>
+            <button>Подтвердить</button>
+                </form>
+        </div>
+        
+
     {%endif%}
+        <div class="post-container">
             {% for post in posts %}
             {% if post.visible == 'yes' %}
             <a href="/post/{{post.address}}">
@@ -32,7 +38,6 @@
             {%endif%}
             {% endfor %}
         </div>
-        </form>
     </body>
 </main>
 

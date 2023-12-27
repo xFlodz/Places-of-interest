@@ -1,17 +1,20 @@
 from flask import render_template, flash, request, redirect
-from models import Users, Posts, Tags, PostTags
-from flask_login import login_required, login_user, logout_user
+from models import Users, Posts, Tags, PostTags, PostImages
+from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
+from sqlalchemy import desc
+
 
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-from save_picture import save_image, save_main, check_type_image, update_images
+from save_picture import save_image, save_main, check_type_image, upload_images
 from text_editor import text_editor, get_notes
 from image_editor import image_editor
 from counter import counter
 from delete_images import delete_images, delete_main
 from mail_sender import mailsend
+from current_date import date
 
 @app.route('/')
 def index():
@@ -23,18 +26,38 @@ def index():
 def register():
     if request.method == 'POST':
         login = request.form.get('login')
-        user = Users.query.filter_by(email=login).first()
-        if user:
-            flash('Пользователь уже существует', 'danger')
+        name = request.form.get('name')
+        if login is None:
+            flash('Введите логин', 'danger')
+        elif name is None:
+            flash('Введите ФИО', 'danger')
         else:
-            password = create_password()
-            flash(f'Пароль {password}', 'success')
-            mailsend(login, password)
-            password = generate_password_hash(password)
-            user = Users(email=login, password=password, role='poster')
-            db.session.add(user)
-            db.session.commit()
+            user = Users.query.filter_by(email=login).first()
+            if user:
+                flash('Пользователь уже существует', 'danger')
+            else:
+                password = create_password()
+                flash(f'Пароль {password}', 'success')
+                mailsend(login, password)
+                password = generate_password_hash(password)
+                user = Users(email=login, password=password, role='poster', name=name)
+                db.session.add(user)
+                db.session.commit()
     return render_template('register.html')
+
+
+@app.route('/account', methods=['POST', 'GET'])
+@login_required
+def account():
+    name = current_user.name
+    if request.method == 'POST':
+        name = request.form.get('name')
+        current_user.name = name
+        db.session.commit()
+        flash('Вы успешно изменили имя', 'success')
+        return redirect('/account')
+    return render_template('account.html', name=name)
+
 
 
 @app.route('/tags', methods=['POST', 'GET'])
@@ -100,10 +123,10 @@ def post(address):
     if post:
         text = post.text
         mini_text = text_editor(text)
-        images_list = post.post_images
+        images_list = PostImages.query.filter_by(address=address).all()
         count = counter(mini_text)
-        notes = get_notes(images_list, post.address)
-        images_list = image_editor(post.post_images)
+        notes = get_notes(images_list)
+        images_list = image_editor(images_list)
         tags = PostTags.query.filter_by(address=address).all()
         tags_list = []
         for tag in tags:
@@ -134,7 +157,8 @@ def create_post():
                     if check_main == True:
                         main_image = save_main(main_image, address)
                         visible = 'no'
-                        post = Posts(address=address, header=header, text=text, main_image=main_image, visible=visible)
+                        current_date = date()
+                        post = Posts(address=address, header=header, text=text, main_image=main_image, visible=visible, creation_time=current_date)
                         db.session.add(post)
                         db.session.commit()
                         return redirect(f'/confirmpost/{post.address}')
@@ -167,6 +191,7 @@ def confirm_post(address):
     if request.method == 'POST':
         notes = []
         images = []
+        creator = request.form.get('name')
         for i in range(count_for_image):
             note = request.form.get(f'note{i}')
             image = request.files[f'image{i}']
@@ -183,16 +208,16 @@ def confirm_post(address):
                 notes.append(note)
         if count_for_image == len(notes):
             if count_for_image == len(images):
-                names = update_images(notes, images)
-                post.post_images = names
+                upload_images(notes, images, address)
                 post.visible = 'yes'
+                post.creator = creator
                 db.session.commit()
                 return redirect(f'/post/{address}')
             else:
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list)
+    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
@@ -282,17 +307,17 @@ def confirm_edit(address):
                 notes.append(note)
         if count_for_image == len(notes):
             if count_for_image == len(images):
-                delete_images(post)
-                names = update_images(notes, images)
-                post.post_images = names
-                post.visible = 'yes'
-                db.session.commit()
+                images_in_this_post = PostImages.query.filter_by(address=address).all()
+                for i in images_in_this_post:
+                    db.session.delete(i)
+                    db.session.commit()
+                upload_images(notes, images, address)
                 return redirect(f'/post/{address}')
             else:
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list)
+    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name)
 
 
 @app.route('/deletepost/<address>')
@@ -308,7 +333,7 @@ def delete_post(address):
 
 @app.route('/allposts', methods=['POST', 'GET'])
 def all_posts():
-    posts = Posts.query.all()
+    posts = Posts.query.order_by(desc(Posts.id)).all()
     tags = Tags.query.all()
     tags_list = []
     filtered_posts = []
