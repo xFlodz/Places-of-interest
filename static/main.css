@@ -348,7 +348,7 @@ img[name="text-img"], img[name="post-img"]{
     height: 90%;
     position: fixed;
     z-index: 9999;
-    background-color: #0000008d;
+    background-color: #000000d2;
 }
 
 .post-head-image-pop img{
@@ -505,8 +505,6 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     background-color: #b80000;
 }
 
-<<<<<<< Updated upstream
-=======
 .dropdown{
     position: absolute;
 }
@@ -556,7 +554,31 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     position: absolute;
     display: block;
 }
->>>>>>> Stashed changes
+
+.input-name{
+    padding: 8px;
+    background-color: white;
+    border-radius: 20px;
+    border: #000072 2px solid;
+    font-size: 16;
+}
+
+.post-info{
+    margin-left: 40px;
+}
+
+.post-info li{
+    font-size: 18;
+    display: flex;
+    list-style: none;
+    flex-direction: row;
+    align-items: center;
+}
+
+.post-info ul{
+    padding: 0;
+}
+
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
         width: 150px;
@@ -603,8 +625,5 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     z-index: 9999;
     background-color: #0000008d;
     }
-<<<<<<< Updated upstream
 }
-=======
-}
->>>>>>> Stashed changes
+
