@@ -34,18 +34,19 @@
                 {%endfor%}
             </ul>
         </div>
-        <div class="post-creator">
-            <h4>Создатель поста</h4>
+        <div class="post-info">
             <ul>
-                <h4>{{post.creator}}</h4></li>
+                <li>
+                    <h4>Автор статьи:</h4>
+                    <h4>&nbsp {{post.creator}}</h4>
+                </li>
+                <li>
+                    <h4>Дата создания:</h4>
+                    <h4>&nbsp {{post.creation_time}}</h4>
+                </li>
             </ul>
         </div>
-        <div class="post-creation-time">
-            <h4>Дата поста</h4>
-            <ul>
-                <h4>{{post.creation_time}}</h4></li>
-            </ul>
-        </div>
+
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
             <div class="editor-buttons">
                 <a href="/editpost/{{post.address}}"><button name="edit-post-button">Редактировать пост</button></a>
