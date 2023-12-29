@@ -33,18 +33,19 @@
                     {%endfor%}
                 </ul>
             </div>
-            <div class="post-creator">
-            <h4>Создатель поста</h4>
+        <div class="post-info">
             <ul>
-                <li><input name="name" type="text" value="{{name}}"></li>
+                <li>
+                    <h4>Автор статьи: &nbsp</h4>
+                    <input name="name" type="text" value="{{post.creator}}" class="input-name">
+                    <li>Временной промежуток<input type="date" value="{{left_date}}" name="left-date" min="1779-01-01" max="{{current_date}}"><input type="date" value="{{right_date}}" name="right-date" min="1779-01-01" max="{{current_date}}"></li>
+                </li>
+                <li>
+                    <h4>Дата создания:</h4>
+                    <h4>&nbsp {{post.creation_time}}</h4>
+                </li>
             </ul>
-            </div>
-            <div class="post-creation-time">
-                <h4>Дата поста</h4>
-                <ul>
-                    <h4>{{post.creation_time}}</h4></li>
-                </ul>
-            </div>
+        </div>
             <button name="submit" type="submit" id="submit-post">Сохранить</button>
         </div>
     </form>

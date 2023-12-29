@@ -19,6 +19,8 @@ class Posts(db.Model):
     visible = db.Column(db.String(10), nullable=False)
     creator = db.Column(db.String)
     creation_time = db.Column(db.String, nullable=False)
+    left_date = db.Column(db.String)
+    right_date = db.Column(db.String)
 
 
 class Tags(db.Model):

@@ -1,10 +1,6 @@
 from flask import render_template, flash, request, redirect
 from models import Users, Posts, Tags, PostTags, PostImages
-<<<<<<< HEAD
 from flask_login import login_required, login_user, logout_user, current_user
-=======
-from flask_login import login_required, login_user, logout_user
->>>>>>> 01d94ed0f2e074bdc37b23343e21ef6dccace049
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
 
@@ -12,17 +8,14 @@ from sqlalchemy import desc
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
-<<<<<<< HEAD
 from save_picture import save_image, save_main, check_type_image, upload_images
-=======
-from save_picture import save_image, save_main, check_type_image, update_images, upload_images
->>>>>>> 01d94ed0f2e074bdc37b23343e21ef6dccace049
 from text_editor import text_editor, get_notes
 from image_editor import image_editor
 from counter import counter
 from delete_images import delete_images, delete_main
 from mail_sender import mailsend
 from current_date import date
+from post_sort import post_sort
 
 @app.route('/')
 def index():
@@ -187,6 +180,7 @@ def create_post():
 @app.route('/confirmpost/<address>', methods=['POST', 'GET'])
 @login_required
 def confirm_post(address):
+    current_date = date()
     tags = PostTags.query.filter_by(address=address).all()
     tags_list = []
     for tag in tags:
@@ -219,13 +213,15 @@ def confirm_post(address):
                 upload_images(notes, images, address)
                 post.visible = 'yes'
                 post.creator = creator
+                post.left_date = request.form.get('left-date')
+                post.right_date = request.form.get('right-date')
                 db.session.commit()
                 return redirect(f'/post/{address}')
             else:
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name)
+    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name, current_date=current_date)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
@@ -287,16 +283,20 @@ def edit_post(address):
 @app.route('/confirmedit/<address>', methods=['POST', 'GET'])
 @login_required
 def confirm_edit(address):
+    current_date = date()
     tags = PostTags.query.filter_by(address=address).all()
     tags_list = []
     for tag in tags:
         tags_list.append(tag.tag)
     post = Posts.query.filter_by(address=address).first()
+    left_date = post.left_date
+    right_date = post.right_date
     text = post.text
     mini_text = text_editor(text)
     count = counter(mini_text)
     count_for_image = text.count('$')
     if request.method == 'POST':
+        name = request.form.get('name')
         notes = []
         images = []
         for i in range(count_for_image):
@@ -320,33 +320,48 @@ def confirm_edit(address):
                     db.session.delete(i)
                     db.session.commit()
                 upload_images(notes, images, address)
+                post.creator = name
+                post.left_date = request.form.get('left-date')
+                post.right_date = request.form.get('right-date')
+                db.session.commit()
                 return redirect(f'/post/{address}')
             else:
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name)
+    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, current_date=current_date, left_date=left_date, right_date=right_date)
 
 
 @app.route('/deletepost/<address>')
 @login_required
 def delete_post(address):
     post = Posts.query.filter_by(address=address).first()
-    delete_images(post)
+    images_in_this_post = PostImages.query.filter_by(address=address).all()
+    delete_images(images_in_this_post)
     delete_main(post)
     db.session.delete(post)
+    for i in images_in_this_post:
+        db.session.delete(i)
     db.session.commit()
     return redirect('/allposts')
 
 
 @app.route('/allposts', methods=['POST', 'GET'])
 def all_posts():
-    posts = Posts.query.order_by(desc(Posts.id)).all()
+    current_date = date()
     tags = Tags.query.all()
     tags_list = []
     filtered_posts = []
     post_list = []
+    posts = Posts.query.order_by(desc(Posts.id)).all()
     if request.method == 'POST':
+        type_of_sort = request.form.get('select')
+        if type_of_sort == 'date':
+            posts = Posts.query.order_by(desc(Posts.id)).all()
+        else:
+            posts = Posts.query.order_by(desc(Posts.id)).all()
+        left_date = request.form.get('left-date')
+        right_date = request.form.get('right-date')
         for tag in tags:
             if request.form.get(f'{tag.nametag}'):
                 tags_list.append(tag.nametag)
@@ -379,15 +394,15 @@ def all_posts():
 
     if request.method == 'POST':
         if filtered_posts:
-            print(filtered_posts)
-            if filtered_posts != [None]:
-                posts = filtered_posts
-            else:
-                flash('Постов с таким тегом не существует', 'danger')
+            posts = filtered_posts
+            posts = post_sort(posts, left_date, right_date)
+            return render_template('all_posts.html', posts=posts, tags=tags, current_date=current_date)
         else:
-            flash('Постов с таким набором тегов нет', 'danger')
-
-    return render_template('all_posts.html', posts=posts, tags=tags)
+            posts = post_sort(posts, left_date, right_date)
+            if tags_list:
+                flash('Постов с таким наборов тегов нет', 'danger')
+            return render_template('all_posts.html', posts=posts, tags=tags, current_date=current_date)
+    return render_template('all_posts.html', posts=posts, tags=tags, current_date=current_date)
 
 
 @manager.user_loader

@@ -34,10 +34,13 @@
                 </ul>
             </div>
             <div class="post-creator">
-                <h4>Создатель поста</h4>
-                <ul>
-                    <li><input name="name" type="text" value="{{name}}"></li>
+                <h4>Автор статьи</h4>
+                <ul style="margin: 0;">
+                    <li><input name="name" type="text" value="{{name}}" class="input-name" style="margin-left: -40px;"></li>
                 </ul>
+            </div>
+            <div>
+                <li>Временной промежуток<input type="date" value="1799-01-01" name="left-date" min="1779-01-01" max="{{current_date}}"><input type="date" value="{{current_date}}" name="right-date" min="1779-01-01" max="{{current_date}}"></li>
             </div>
             <button name="submit" type="submit" id="submit-post">Создать</button>
         </div>
