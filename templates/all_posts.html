@@ -20,11 +20,17 @@
                 {%endfor%}
             </ul>
             <ul>
+<<<<<<< HEAD
                 <li><select class="sort-type" id="continent_selector" name="select">
                         <option value="date">Сортировать по дате</option>
                         <option value="chrono">Сортировать по хронологии</option>
                     </select></li>
                 <li>Временной промежуток<input type="date" value="1799-01-01" name="left-date" min="1779-01-01" max="{{current_date}}"><input type="date" value="{{current_date}}" name="right-date" min="1779-01-01" max="{{current_date}}"></li>
+=======
+                <li><input type="checkbox">Соритровать по дате публикации (убывающая)</li>
+                <li><input type="checkbox">Соритровать по дате публикации (возрастающая)</li>
+                <li>Временной промежуток<input type="date"><input type="date"></li>
+>>>>>>> 5240f9b2992fff370cae47f88cfd3a006ad4a8af
             </ul>
             <button>Подтвердить</button>
                 </form>
