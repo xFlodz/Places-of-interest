@@ -359,7 +359,7 @@ def all_posts():
         if type_of_sort == 'date':
             posts = Posts.query.order_by(desc(Posts.id)).all()
         else:
-            posts = Posts.query.order_by(desc(Posts.id)).all()
+            posts = Posts.query.order_by(Posts.left_date).all()
         left_date = request.form.get('left-date')
         right_date = request.form.get('right-date')
         for tag in tags:
