@@ -26,23 +26,23 @@
                 {%endif%}
                 {%endif%}
             {%endfor%}
-            <div class="post-tags">
+            <div class="post-info" style="margin-top: 100px; margin-left: -100px;">
                 <ul>
-                    {%for tag in tags %}
-                        <li>{{tag}}</li>
-                    {%endfor%}
+                    <li>
+                        <h4>Автор статьи: &nbsp</h4>
+                        <input name="name" type="text" value="{{name}}" class="input-name">
+                    </li>
+                    <li>
+                        <h4>Дата создания:</h4>
+                        <h4>&nbsp {{post.creation_time}}</h4>
+                    </li>
+                    <li style="font-weight: bold;">Временной промежуток &nbsp<input type="date" value="1799-01-01" name="left-date" min="1779-01-01"
+                            max="{{current_date}}">&nbsp
+                        <input type="date" value="{{current_date}}" name="right-date" min="1779-01-01" max="{{current_date}}">
+                    </li>
                 </ul>
             </div>
-            <div class="post-creator">
-                <h4>Автор статьи</h4>
-                <ul style="margin: 0;">
-                    <li><input name="name" type="text" value="{{name}}" class="input-name" style="margin-left: -40px;"></li>
-                </ul>
-            </div>
-            <div>
-                <li>Временной промежуток<input type="date" value="1799-01-01" name="left-date" min="1779-01-01" max="{{current_date}}"><input type="date" value="{{current_date}}" name="right-date" min="1779-01-01" max="{{current_date}}"></li>
-            </div>
-            <button name="submit" type="submit" id="submit-post">Создать</button>
+            <button name="submit" type="submit" id="submit-post" style="margin-top: -60px;">Создать</button>
         </div>
     </form>
     </body>
