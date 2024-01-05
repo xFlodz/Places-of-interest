@@ -507,10 +507,12 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 
 .dropdown{
     position: absolute;
+    transition: 0.2s;
 }
 
 .dropdown + div{
     display: none;
+    transition: 0.2s;
 }
 
 .dropdown button{
@@ -564,7 +566,7 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 }
 
 .post-info{
-    margin-left: 40px;
+    margin-left: 80px;
 }
 
 .post-info li{
@@ -577,6 +579,15 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 
 .post-info ul{
     padding: 0;
+}
+
+.filter select {
+    font-size: 15px;
+    width: 180px;
+    border-radius: 15px;
+    padding: 3px 0;
+    border: #000072 solid 2px;
+    text-overflow: ellipsis;
 }
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
