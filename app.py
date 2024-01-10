@@ -159,7 +159,7 @@ def create_post():
                         main_image = save_main(main_image, address)
                         visible = 'no'
                         current_date = date()
-                        left_date = '1799-01-01'
+                        left_date = '1779-01-01'
                         post = Posts(address=address, header=header, text=text, main_image=main_image, visible=visible, creation_time=current_date, left_date=left_date, right_date=current_date)
                         db.session.add(post)
                         db.session.commit()
