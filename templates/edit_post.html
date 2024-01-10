@@ -33,6 +33,9 @@
                 {%endif%}
                 <ul>
                     <li><input name="header" type="text" size="50" value="{{post.header}}"></li>
+                    <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
+                        <img src="/{{image}}" name="text-img">
+                    </div>
                     <li><input name="main-image" type="file"></li>
                     <li><textarea name="text" type="text" id="post-text" cols="120" rows="20">{{post.text}}</textarea></li>
                         <button name="submit" type="submit">Далее</button>

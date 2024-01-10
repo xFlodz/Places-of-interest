@@ -239,6 +239,7 @@ def edit_post(address):
     for i in tags_in_this_post:
         tags_in_this_post_list.append(i.tag)
     post = Posts.query.filter_by(address=address).first()
+    main_image_in_post = post.main_image
     new_tags = []
     if request.method == 'POST':
         for tag in tags:
@@ -280,7 +281,7 @@ def edit_post(address):
             return redirect(f'/confirmedit/{address}')
         else:
             flash('Картинка не может быть такого типа', 'danger')
-    return render_template('edit_post.html', post=post, tags=tags_list, titps=tags_in_this_post_list)
+    return render_template('edit_post.html', post=post, tags=tags_list, titps=tags_in_this_post_list, image=main_image_in_post)
 
 
 @app.route('/confirmedit/<address>', methods=['POST', 'GET'])
