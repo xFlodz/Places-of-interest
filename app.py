@@ -159,7 +159,8 @@ def create_post():
                         main_image = save_main(main_image, address)
                         visible = 'no'
                         current_date = date()
-                        post = Posts(address=address, header=header, text=text, main_image=main_image, visible=visible, creation_time=current_date)
+                        left_date = '1799-01-01'
+                        post = Posts(address=address, header=header, text=text, main_image=main_image, visible=visible, creation_time=current_date, left_date=left_date, right_date=current_date)
                         db.session.add(post)
                         db.session.commit()
                         return redirect(f'/confirmpost/{post.address}')
@@ -193,7 +194,7 @@ def confirm_post(address):
     if request.method == 'POST':
         notes = []
         images = []
-        creator = request.form.get('name')
+        creator = request.form.get('creator')
         for i in range(count_for_image):
             note = request.form.get(f'note{i}')
             image = request.files[f'image{i}']
@@ -295,8 +296,15 @@ def confirm_edit(address):
     mini_text = text_editor(text)
     count = counter(mini_text)
     count_for_image = text.count('$')
+    for_notes = PostImages.query.filter_by(address=address).all()
+    notes = []
+    for i in for_notes:
+        notes.append(i.note)
+    images_in_post = []
+    for i in for_notes:
+        images_in_post.append(i.path_to_image)
     if request.method == 'POST':
-        name = request.form.get('name')
+        creator = request.form.get('creator')
         notes = []
         images = []
         for i in range(count_for_image):
@@ -309,6 +317,8 @@ def confirm_edit(address):
                 else:
                     name = save_image(image, post.address, i)
                     images.append(name)
+            else:
+                images.append(images_in_post[i])
             if len(note) > 155:
                 flash('Описание больше 155 символов', 'danger')
             else:
@@ -320,7 +330,7 @@ def confirm_edit(address):
                     db.session.delete(i)
                     db.session.commit()
                 upload_images(notes, images, address)
-                post.creator = name
+                post.creator = creator
                 post.left_date = request.form.get('left-date')
                 post.right_date = request.form.get('right-date')
                 db.session.commit()
@@ -329,7 +339,7 @@ def confirm_edit(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, current_date=current_date, left_date=left_date, right_date=right_date)
+    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, current_date=current_date, left_date=left_date, right_date=right_date, notes=notes, images=images_in_post)
 
 
 @app.route('/deletepost/<address>')

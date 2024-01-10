@@ -25,13 +25,13 @@ class Posts(db.Model):
 
 class Tags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    nametag = db.Column(db.Text)
+    nametag = db.Column(db.String)
 
 
 class PostTags(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(50), nullable=False)
-    tag = db.Column(db.Text, nullable=False)
+    tag = db.Column(db.String, nullable=False)
 
 
 class PostImages(db.Model):

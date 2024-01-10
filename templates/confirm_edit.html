@@ -19,9 +19,12 @@
                 {%if mini_text[i]%}
                     <p style="white-space: pre-wrap">{{mini_text[i]}}</p>
                 {%if i <= count_for_image %}
+                <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
+                    <img src="/{{images[i]}}" name="text-img">
+                </div>
                 <ul class="image-conf">
                     <li><input name="image{{i}}" type="file"></li>
-                    <li><input name="note{{i}}" type="text" placeholder="Введите описание фото" size="50" class="image-description-editor"></li>
+                    <li><input name="note{{i}}" type="text" value="{{notes[i]}}" size="50" class="image-description-editor"></li>
                 </ul>
                 {%endif%}
                 {%endif%}
@@ -37,7 +40,7 @@
                 <ul>
                     <li>
                         <h4>Автор статьи: &nbsp</h4>
-                        <input name="name" type="text" value="{{post.creator}}" class="input-name">
+                        <input name="creator" type="text" value="{{post.creator}}" class="input-name">
                     </li>
                     <li>
                         <h4>Дата создания:</h4>
