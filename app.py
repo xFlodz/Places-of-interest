@@ -191,6 +191,8 @@ def confirm_post(address):
     mini_text = text_editor(text)
     count = counter(mini_text)
     count_for_image = text.count('$')
+    left_date = post.left_date
+    right_date = post.right_date
     if request.method == 'POST':
         notes = []
         images = []
@@ -222,7 +224,7 @@ def confirm_post(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name, current_date=current_date)
+    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name, current_date=current_date, left_date=left_date, right_date=right_date)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
