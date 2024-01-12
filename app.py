@@ -273,6 +273,7 @@ def edit_post(address):
     for i in tags_in_this_post:
         tags_in_this_post_list.append(i.tag)
     post = Posts.query.filter_by(address=address).first()
+    new_text = edit_text(post.text)
     main_image_in_post = post.main_image
     new_tags = []
     if request.method == 'POST':
@@ -307,7 +308,12 @@ def edit_post(address):
             else:
                 error = True
         if text:
-            post.text = text
+            check_text = edit_text(text)
+            if len(new_text) == len(check_text):
+                post.text = text
+            else:
+                flash('Нельзя добавлять картинки в уже существующий пост', 'danger')
+                return redirect(f'/editpost/{address}')
         if header:
             post.header = header
         if error == False:
