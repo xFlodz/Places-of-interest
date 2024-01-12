@@ -1,5 +1,5 @@
 from flask import render_template, flash, request, redirect
-from models import Users, Posts, Tags, PostTags, PostImages
+from models import Users, Posts, Tags, PostTags, PostImages, PostVideo
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
@@ -9,13 +9,15 @@ from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
 from save_picture import save_image, save_main, check_type_image, upload_images
-from text_editor import text_editor, get_notes
+from text_editor import get_notes, edit_text, put_notes
 from image_editor import image_editor
-from counter import counter
+from counter import counter, id_counter
 from delete_images import delete_images, delete_main
 from mail_sender import mailsend
 from current_date import date
 from post_sort import post_sort
+from video import get_html, check_video
+from list_create import create_images_list, create_videos_list
 
 @app.route('/')
 def index():
@@ -123,18 +125,31 @@ def post(address):
     post = Posts.query.filter_by(address=address).first()
     if post:
         text = post.text
-        mini_text = text_editor(text)
+        new_text = edit_text(text)
+        count_images = id_counter(new_text, '#image#')
+        count_videos = id_counter(new_text, '#video#')
         images_list = PostImages.query.filter_by(address=address).all()
-        count = counter(mini_text)
         notes = get_notes(images_list)
+        print(notes)
+        videos_list = PostVideo.query.filter_by(address=address).all()
+        if images_list:
+            images_list = create_images_list(count_images, images_list)
+        if videos_list:
+            videos_list = create_videos_list(count_videos, videos_list)
+        count = counter(new_text)
         images_list = image_editor(images_list)
+        notes = put_notes(images_list, notes)
+        print(notes)
         tags = PostTags.query.filter_by(address=address).all()
         tags_list = []
         for tag in tags:
             tags_list.append(tag.tag)
+        for i in range(len(videos_list)):
+            if videos_list[i] != '':
+                videos_list[i] = videos_list[i].video_address
     else:
         return redirect('/')
-    return render_template('post.html', post=post, mini_text=mini_text, notes=notes, images=images_list, count=count, tags=tags_list)
+    return render_template('post.html', post=post, new_text=new_text, notes=notes, images=images_list, count=count, tags=tags_list, videos_list=videos_list)
 
 
 @app.route('/createpost', methods=['POST', 'GET'])
@@ -188,17 +203,36 @@ def confirm_post(address):
         tags_list.append(tag.tag)
     post = Posts.query.filter_by(address=address).first()
     text = post.text
-    mini_text = text_editor(text)
-    count = counter(mini_text)
-    count_for_image = text.count('$')
+    new_text = edit_text(text)
+    count_images = id_counter(new_text, '#image#')
+    count_videos = id_counter(new_text, '#video#')
+    count = counter(new_text)
     left_date = post.left_date
     right_date = post.right_date
     if request.method == 'POST':
         notes = []
         images = []
         creator = request.form.get('creator')
-        for i in range(count_for_image):
+        videos = []
+        for i in count_videos:
+            video = request.form.get(f'video{i}')
+            videos.append(video)
+        if videos:
+            for video in videos:
+                check = check_video(video)
+                if check == False:
+                    flash('Неверная ссылка на одном из видео', 'danger')
+                    return redirect(f'/confirmpost/{address}')
+            for video in videos:
+                video_url = get_html(video)
+                post_video = PostVideo(address=address, video_address=video_url)
+                db.session.add(post_video)
+                db.session.commit()
+        for i in count_images:
             note = request.form.get(f'note{i}')
+            if note == '':
+                flash('Введите описания', 'danger')
+                return redirect(f'/confirmpost/{address}')
             image = request.files[f'image{i}']
             if image:
                 check = check_type_image(image)
@@ -211,8 +245,8 @@ def confirm_post(address):
                 flash('Описание больше 155 символов', 'danger')
             else:
                 notes.append(note)
-        if count_for_image == len(notes):
-            if count_for_image == len(images):
+        if len(count_images) == len(notes):
+            if len(count_images) == len(images):
                 upload_images(notes, images, address)
                 post.visible = 'yes'
                 post.creator = creator
@@ -224,7 +258,7 @@ def confirm_post(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, name=current_user.name, current_date=current_date, left_date=left_date, right_date=right_date)
+    return render_template('confirm_post.html', post=post, new_text=new_text, count=count, tags=tags_list, name=current_user.name, current_date=current_date, left_date=left_date, right_date=right_date)
 
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
@@ -296,22 +330,46 @@ def confirm_edit(address):
     left_date = post.left_date
     right_date = post.right_date
     text = post.text
-    mini_text = text_editor(text)
-    count = counter(mini_text)
-    count_for_image = text.count('$')
-    for_notes = PostImages.query.filter_by(address=address).all()
-    notes = []
-    for i in for_notes:
-        notes.append(i.note)
-    images_in_post = []
-    for i in for_notes:
-        images_in_post.append(i.path_to_image)
+    new_text = edit_text(text)
+    count_images = id_counter(new_text, '#image#')
+    count_videos = id_counter(new_text, '#video#')
+    images_list = PostImages.query.filter_by(address=address).all()
+    notes = get_notes(images_list)
+    videos_list = PostVideo.query.filter_by(address=address).all()
+    if images_list:
+        images_list = create_images_list(count_images, images_list)
+    if videos_list:
+        videos_list = create_videos_list(count_videos, videos_list)
+    count = counter(new_text)
+    images_list = image_editor(images_list)
+    notes = put_notes(images_list, notes)
+    for i in range(len(videos_list)):
+        if videos_list[i] != '':
+            videos_list[i] = videos_list[i].video_address
     if request.method == 'POST':
         creator = request.form.get('creator')
+        videos = []
+        for i in count_videos:
+            video = request.form.get(f'video{i}')
+            videos.append(video)
+        if videos:
+            for video in videos:
+                check = check_video(video)
+                if check == False:
+                    flash('Неверная ссылка на одном из видео', 'danger')
+                    return redirect(f'/confirmpost/{address}')
+            for video in videos:
+                video_url = get_html(video)
+                post_video = PostVideo(address=address, video_address=video_url)
+                db.session.add(post_video)
+                db.session.commit()
         notes = []
         images = []
-        for i in range(count_for_image):
+        for i in count_images:
             note = request.form.get(f'note{i}')
+            if note == '':
+                flash('Введите описания', 'danger')
+                return redirect(f'/confirmpost/{address}')
             image = request.files[f'image{i}']
             if image:
                 check = check_type_image(image)
@@ -321,13 +379,13 @@ def confirm_edit(address):
                     name = save_image(image, post.address, i)
                     images.append(name)
             else:
-                images.append(images_in_post[i])
+                images.append(images_list[i])
             if len(note) > 155:
                 flash('Описание больше 155 символов', 'danger')
             else:
                 notes.append(note)
-        if count_for_image == len(notes):
-            if count_for_image == len(images):
+        if len(count_images) == len(notes):
+            if len(count_images) == len(images):
                 images_in_this_post = PostImages.query.filter_by(address=address).all()
                 for i in images_in_this_post:
                     db.session.delete(i)
@@ -342,7 +400,7 @@ def confirm_edit(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_edit.html', post=post, mini_text=mini_text, count=count, count_for_image=count_for_image-1, tags=tags_list, current_date=current_date, left_date=left_date, right_date=right_date, notes=notes, images=images_in_post)
+    return render_template('confirm_edit.html', post=post, new_text=new_text, count=count, tags=tags_list, current_date=current_date, left_date=left_date, right_date=right_date, notes=notes, images=images_list, videos_list=videos_list)
 
 
 @app.route('/deletepost/<address>')

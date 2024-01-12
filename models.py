@@ -39,3 +39,9 @@ class PostImages(db.Model):
     address = db.Column(db.String(50), nullable=False)
     path_to_image = db.Column(db.String, nullable=False)
     note = db.Column(db.String, nullable=False)
+
+
+class PostVideo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    address = db.Column(db.String(50), nullable=False)
+    video_address = db.Column(db.String, nullable=False)
