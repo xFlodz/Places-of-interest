@@ -312,7 +312,7 @@ def edit_post(address):
             if len(new_text) == len(check_text):
                 post.text = text
             else:
-                flash('Нельзя добавлять картинки в уже существующий пост', 'danger')
+                flash('Нельзя добавлять картинки и видео в уже существующий пост', 'danger')
                 return redirect(f'/editpost/{address}')
         if header:
             post.header = header
