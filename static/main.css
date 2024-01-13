@@ -151,7 +151,7 @@ main{
     top: 0;
     margin: 40px 200px;
     justify-content: space-around;
-    align-content: space-between;
+    align-content: flex-start;
     flex-wrap: wrap;
     height: 100%;
     flex-direction: row;
@@ -588,6 +588,19 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     padding: 3px 0;
     border: #000072 solid 2px;
     text-overflow: ellipsis;
+}
+
+.video-wrapper{
+    padding: 10px 20px;
+    margin: 40px 0px;
+    width: 100%; 
+    align-content: center;   
+    justify-content: center;
+    display: flex;
+}
+
+iframe{
+    display: flex;
 }
 
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
