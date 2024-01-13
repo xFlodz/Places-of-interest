@@ -359,6 +359,7 @@ def confirm_edit(address):
             video = request.form.get(f'video{i}')
             videos.append(video)
         if videos:
+            new_videos = []
             for video in videos:
                 check = check_video(video)
                 if check == False:
@@ -367,7 +368,13 @@ def confirm_edit(address):
             for video in videos:
                 video_url = get_html(video)
                 post_video = PostVideo(address=address, video_address=video_url)
-                db.session.add(post_video)
+                new_videos.append(post_video)
+            old_videos = PostVideo.query.filter_by(address=address).all()
+            for i in old_videos:
+                db.session.delete(i)
+                db.session.commit()
+            for i in new_videos:
+                db.session.add(i)
                 db.session.commit()
         notes = []
         images = []
