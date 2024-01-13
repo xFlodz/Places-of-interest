@@ -149,6 +149,8 @@ def post(address):
                 videos_list[i] = videos_list[i].video_address
     else:
         return redirect('/')
+    for i in videos_list:
+        print(i)
     return render_template('post.html', post=post, new_text=new_text, notes=notes, images=images_list, count=count, tags=tags_list, videos_list=videos_list)
 
 
@@ -367,6 +369,7 @@ def confirm_edit(address):
                     return redirect(f'/confirmpost/{address}')
             for video in videos:
                 video_url = get_html(video)
+                print(video_url)
                 post_video = PostVideo(address=address, video_address=video_url)
                 new_videos.append(post_video)
             old_videos = PostVideo.query.filter_by(address=address).all()
@@ -421,10 +424,13 @@ def confirm_edit(address):
 def delete_post(address):
     post = Posts.query.filter_by(address=address).first()
     images_in_this_post = PostImages.query.filter_by(address=address).all()
+    videos_in_this_post = PostVideo.query.filter_by(address=address).all()
     delete_images(images_in_this_post)
     delete_main(post)
     db.session.delete(post)
     for i in images_in_this_post:
+        db.session.delete(i)
+    for i in videos_in_this_post:
         db.session.delete(i)
     db.session.commit()
     return redirect('/allposts')
