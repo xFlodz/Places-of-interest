@@ -15,7 +15,9 @@
             {% for i in count %}
                 {%if new_text[i]%}
                     {%if new_text[i] == '#video#' %}
+                    <div class="video-wrapper">
                          <iframe width="560" height="315" src="https://www.youtube.com/embed/{{videos_list[i]}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
                     {%elif new_text[i] == '#image#' %}
                         <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
                             <img src="/{{images[i]}}" name="text-img">
@@ -27,6 +29,7 @@
                 {%endif%}
             {%endfor%}
         </div>
+        
         <div class="post-tags">
             <ul>
                 {%for tag in tags %}
