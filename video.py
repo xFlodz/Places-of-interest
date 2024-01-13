@@ -10,9 +10,12 @@ def get_html(address):
         new_address = address.split('?')
         new_address = new_address[0].replace('https://youtu.be/', '')
     if 'youtube' in address:
-        new_address = address.split('&')
-        new_address = new_address[0].replace('https://www.youtube.com/watch?v=', '')
-        new_address = new_address[0].replace('https://www.youtube.com/embed/', '')
+        if 'embed' in address:
+            new_address = address.split('&')
+            new_address = new_address[0].replace('https://www.youtube.com/embed/', '')
+        else:
+            new_address = address.split('&')
+            new_address = new_address[0].replace('https://www.youtube.com/watch?v=', '')
     return new_address
 
 
