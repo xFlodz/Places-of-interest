@@ -40,9 +40,10 @@
             <a href="/post/{{post.address}}">
                 <div class="post">
                     <div class="gradient"></div>
-                    <p>{{post.header}}</p>
+                    <p style="-webkit-line-clamp: 3;">{{post.header}}</p>
                     <img src="{{post.main_image}}" class="post-prev">
                 </div>
+                <p class="post-info-mini">{{post.creation_time}} <br> {{post.creator}}</p>
             </a>
             {%endif%}
             {% endfor %}
