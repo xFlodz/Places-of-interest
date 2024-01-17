@@ -160,6 +160,8 @@ main{
 }
 
 .post-container a{
+    height: 400px;
+    margin-bottom: 80px;
     text-decoration: none;
 }
 
@@ -171,6 +173,7 @@ main{
     object-fit: contain;
     margin: 50px 40px;
     justify-content: center;
+    margin-bottom: 15px;
 }
 
 .gradient{
@@ -206,11 +209,25 @@ main{
     justify-content: center;
     text-align: center;
     width: 300px;
+    height: 35px;
     z-index: 90;
     margin-top: 80%;
     color: rgb(255, 255, 255);
     text-shadow: 0px 0px 15px #000000;
     
+}
+
+.post-info-mini{
+    margin: 0;
+    margin-left: 40px;
+    padding: 0;
+    width: 300px;
+    height: 30px;
+    text-decoration: none;
+    color: #000000;
+    font-weight: bold;
+    font-size: 20;
+    text-align: center;
 }
 
 #message-post{
