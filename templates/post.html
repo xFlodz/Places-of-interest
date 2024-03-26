@@ -28,27 +28,27 @@
                     {%endif%}
                 {%endif%}
             {%endfor%}
+            <div class="post-info">
+                <ul>
+                    <li>
+                        <h4>Автор статьи:</h4>
+                        <h4>&nbsp {{post.creator}}</h4>
+                    </li>
+                    <li>
+                        <h4>Дата создания:</h4>
+                        <h4>&nbsp {{post.creation_time}}</h4>
+                    </li>
+                </ul>
+            </div>
+            <div class="post-tags">
+                <ul>
+                    {%for tag in tags %}
+                        <li>{{tag}}</li>
+                    {%endfor%}
+                </ul>
+            </div>
         </div>
         
-        <div class="post-tags">
-            <ul>
-                {%for tag in tags %}
-                    <li>{{tag}}</li>
-                {%endfor%}
-            </ul>
-        </div>
-        <div class="post-info">
-            <ul>
-                <li>
-                    <h4>Автор статьи:</h4>
-                    <h4>&nbsp {{post.creator}}</h4>
-                </li>
-                <li>
-                    <h4>Дата создания:</h4>
-                    <h4>&nbsp {{post.creation_time}}</h4>
-                </li>
-            </ul>
-        </div>
 
         {% if current_user.is_authenticated and current_user.role == 'poster' %}
             <div class="editor-buttons">

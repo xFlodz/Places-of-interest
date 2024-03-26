@@ -6,7 +6,6 @@
 
 {% block content %}
 <main>
-    <h1 style="text-align: center;">Исторические статьи</h1>
     <body>
     {%if tags %}
         <div class="dropdown" onclick="this.className = (this.className =='dropdown' ? 'active' : 'dropdown')">
@@ -40,7 +39,7 @@
             <a href="/post/{{post.address}}">
                 <div class="post">
                     <div class="gradient"></div>
-                    <p style="-webkit-line-clamp: 3;">{{post.header}}</p>
+                    <p style="-webkit-line-clamp: 3; font-weight: 500;">{{post.header}}</p>
                     <img src="{{post.main_image}}" class="post-prev">
                 </div>
                 <p class="post-info-mini">{{post.creation_time}} <br> {{post.creator}}</p>
