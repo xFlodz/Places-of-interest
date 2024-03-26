@@ -1,5 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
 *{
     border-radius: 5px;
+    font-family: roboto;
 }
 
 body{
@@ -155,7 +158,7 @@ main{
     flex-wrap: wrap;
     height: 100%;
     flex-direction: row;
-    padding-bottom: 20px;
+    padding-bottom: 80px;
     padding-left: 100px;
 }
 
@@ -274,6 +277,7 @@ main{
 .post-creation-wrapper li{
     padding: 10px 0;
     display: flex;
+    justify-content: center;
 }
 
 .post-creation-wrapper li input[name="header"]{
@@ -325,9 +329,12 @@ main{
 .post-wrapper{
     width: 70%;
     margin: 2% 15%;
+    padding: 2%;
+    background-color: rgba(255, 255, 255, 0.712);
     justify-content: center;
     font-size: 18;
     padding-bottom: 30px;
+    border-radius: 25px;
 }
 
 .post-head-image{
@@ -580,10 +587,6 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
     border-radius: 20px;
     border: #000072 2px solid;
     font-size: 16;
-}
-
-.post-info{
-    margin-left: 80px;
 }
 
 .post-info li{
