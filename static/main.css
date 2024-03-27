@@ -217,7 +217,7 @@ main{
     margin-top: 80%;
     color: rgb(255, 255, 255);
     text-shadow: 0px 0px 15px #000000;
-    
+
 }
 
 .post-info-mini{
@@ -656,7 +656,7 @@ iframe{
     .tutorial{
         visibility: hidden;
     }
-    
+
     .post-head-image-pop{
     margin: 0;
     padding-right: 50%;
@@ -670,4 +670,3 @@ iframe{
     background-color: #0000008d;
     }
 }
-
