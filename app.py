@@ -62,6 +62,10 @@ def account():
     return render_template('account.html', name=name)
 
 
+@app.route('/timeline', methods=['POST', 'GET'])
+def timeline():
+    posts = Posts.query.order_by(Posts.left_date).all()
+    return render_template('timeline.html', posts=posts)
 
 @app.route('/tags', methods=['POST', 'GET'])
 @login_required
@@ -519,4 +523,4 @@ if __name__ == '__main__':
         db.session.add(user)
         db.session.add(user2)
         db.session.commit()
-    app.run(host='0.0.0.0',port=10000,debug=True)
+    app.run(host='0.0.0.0',port=8080,debug=True)
