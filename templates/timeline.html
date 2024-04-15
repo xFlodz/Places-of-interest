@@ -6,12 +6,25 @@
 
 {% block content %}
 <main>
-    <h1 style="text-align: center;">Исторические статьи</h1>
     <body>
     <form method="post" enctype="multipart/form-data">
+        
+        <div class="timeline_wrapper">
+            <nav>
+                <button>1700</button>
+                <button>1800</button>
+                <button>1900</button>
+                <button>2000</button>
+            </nav>
+        </div>
+        
         <div class="post-container">
+            <div class="year">
+                <h2>1850</h2>
+            </div>
             {% for post in posts %}
             {% if post.visible == 'yes' %}
+            
             <a href="/post/{{post.address}}">
                 <div class="post">
                     <div class="gradient"></div>
@@ -21,8 +34,8 @@
             </a>
             {%endif%}
             {% endfor %}
-    </form>
         </div>
-        </body>
+    </form>
+    </body>
 </main>
 {% endblock content %}

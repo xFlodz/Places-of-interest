@@ -31,6 +31,38 @@
             
             <nav>
                 <ul class="menu">
+
+                    <li>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="/account"><button>{{current_user.name}}</button></a></li>
+                        {%else%}
+                            <li><a href="/login"><button>Войти</button></a></li>
+                        {%endif%}
+
+                        <div class="menu-dropdown">
+                            <button class="menu-dropdown-button">Меню</button>
+                            <div class="menu-dropdown-content">
+                                {% if current_user.is_authenticated %}
+                                    <a href="/account"><button>{{current_user.name}}</button></a>
+                                {%else%}
+                                    <a href="/login"><button>Войти</button></a>
+                                {%endif%}
+                                <a href="/allposts"><button>Статьи</button></a>
+                                <a href="/timeline"><button>Таймлайн</button></a>
+                                <!--<a href="/timeline"><button>Карта</button></a>-->
+                                {% if current_user.is_authenticated and current_user.role == 'poster' %}
+                                    <a href="/createpost"><button>Создать пост</button></a>
+                                {%endif%}
+                                {% if current_user.is_authenticated and current_user.role == 'admin' %}
+                                    <a href="/tags"><button>Теги</button></a>
+                                    <a href="/register"><button>Зарегистрировать</button></a>
+                                {%endif%}
+                                <a href="/timeline" style="margin-bottom: 10px;"><button>Выйти</button></a>
+                            </div>
+                    </li>
+
+                    <!--
+
                     <li><a href="/allposts"><button>Все посты</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/tags"><button>Теги</button></a></li>
@@ -39,19 +71,14 @@
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/register"><button>Зарегистрировать</button></a></li>
                     {%endif%}
-                    {% if current_user.is_authenticated %}
-                    <li><a href="/account"><button>Аккаунт</button></a></li>
-                    {%else%}
-                    <li><a href="/login"><button>Войти</button></a></li>
-                    {%endif%}
                     {% if current_user.is_authenticated and current_user.role == 'poster' %}
                     <li><a href="/createpost"><button>Создать пост</button></a></li>
                     {%endif%}
 
                     {%if current_user.is_authenticated%}
-                    <h1>{{current_user.name}}</h1>
                     <li><a href="/logout"><button>Выйти</button></a></li>
                     {%endif%}
+                    -->
                 </ul>
             </nav>
         </header>
