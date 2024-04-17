@@ -42,11 +42,6 @@
                         <div class="menu-dropdown">
                             <button class="menu-dropdown-button">Меню</button>
                             <div class="menu-dropdown-content">
-                                {% if current_user.is_authenticated %}
-                                    <a href="/account"><button>{{current_user.name}}</button></a>
-                                {%else%}
-                                    <a href="/login"><button>Войти</button></a>
-                                {%endif%}
                                 <a href="/allposts"><button>Статьи</button></a>
                                 <a href="/timeline"><button>Таймлайн</button></a>
                                 <!--<a href="/timeline"><button>Карта</button></a>-->
@@ -57,7 +52,9 @@
                                     <a href="/tags"><button>Теги</button></a>
                                     <a href="/register"><button>Зарегистрировать</button></a>
                                 {%endif%}
-                                <a href="/timeline" style="margin-bottom: 10px;"><button>Выйти</button></a>
+                                {%if current_user.is_authenticated%}
+                                <a href="/logout" style="margin-bottom: 10px;"><button>Выйти</button></a>
+                                {% endif %}
                             </div>
                     </li>
 
