@@ -14,7 +14,10 @@ main{
     padding-top: 50px;
 }
 
-
+img.centered {
+    display: block;
+    margin: 0 auto;
+}
 
 .header{
     left: 0;
@@ -348,6 +351,14 @@ main{
     height: 50%;
 }
 
+.qr-image{
+    cursor: pointer;
+    margin: 2% 15%;
+    margin: 0px 10px 0px 10px;
+    width: 70%;
+    height: 50%;
+}
+
 .post-wrapper h1{
     margin: 60px 0;
     text-align: center;
@@ -387,6 +398,28 @@ img[name="text-img"], img[name="post-img"]{
 }
 
 button[name="edit-post-button"],button[name="delete-post-button"]{
+    border-radius: 20px;
+    background-color: white;
+    border: 2px solid #000072;
+    padding: 10px 15px;
+    font-size: 14;
+    font-weight: 600;
+    margin: 10px 20px;
+    width: 200px;
+}
+
+button[name="show_qr_code"],button[name="show_qr_code"]{
+    border-radius: 20px;
+    background-color: white;
+    border: 2px solid #000072;
+    padding: 10px 15px;
+    font-size: 14;
+    font-weight: 600;
+    margin: 10px 20px;
+    width: 200px;
+}
+
+button[name="download_qr_code"],button[name="download_qr_code"]{
     border-radius: 20px;
     background-color: white;
     border: 2px solid #000072;
