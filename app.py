@@ -1,16 +1,19 @@
 import tempfile
 
-from flask import render_template, flash, request, redirect, abort, Response, url_for
+from flask import render_template, flash, request, redirect, abort
 from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
 import qrcode
-import io
+
+
 from flask import send_file
 from flask import make_response
 from io import BytesIO
 import base64
+
+
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
@@ -24,6 +27,8 @@ from current_date import date
 from post_sort import post_sort
 from video import get_html, check_video
 from list_create import create_images_list, create_videos_list
+from qr_code import qrcode_generate
+
 
 @app.route('/')
 def index():
@@ -296,33 +301,7 @@ def confirm_post(address):
 @app.route('/generate_qr_code/<address>', methods=['GET'])
 @login_required
 def generate_qr_code(address):
-    qr = qrcode.QRCode(
-        version=1,
-        error_correction=qrcode.constants.ERROR_CORRECT_L,
-        box_size=10,
-        border=4,
-    )
-
-    qr.add_data(f"http://192.168.0.107:8080//post/{address}")
-    qr.make(fit=True)
-    qr_img = qr.make_image(fill_color="black", back_color="white")
-
-    img_bytes = BytesIO()
-    qr_img.save(img_bytes, format='PNG')
-    img_bytes.seek(0)
-    img_base64 = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
-
-    existing_qr_code = QRCode.query.filter_by(post_id=address).first()
-
-    if existing_qr_code:
-        existing_qr_code.data = f"http://192.168.0.107:8080//post/{address}"
-        existing_qr_code.image_base64 = img_base64
-    else:
-        new_qr_code = QRCode(data=f"http://192.168.0.107:8080//post/{address}", post_id=address, image_base64=img_base64)
-        db.session.add(new_qr_code)
-
-    db.session.commit()
-
+    img_base64 = qrcode_generate(address)
     return render_template('qr_code.html', qr_img_base64=img_base64, post_address=address)
 
 @app.route('/print_qr_code/<address>')
@@ -332,38 +311,27 @@ def print_qr_code(address):
     if qr_code:
         img_base64 = qr_code.image_base64
         img_bytes = base64.b64decode(img_base64)
-
         try:
             buffer = BytesIO()
             buffer.write(img_bytes)
             buffer.seek(0)
             return send_file(buffer, mimetype='image/png', as_attachment=True, download_name='qr_code.png')
         except Exception as e:
-            print(f"An error occurred: {e}")
             abort(500)
     else:
         abort(404)
 
 
-
-
-
-
-
-
-
-
-
-
-@app.route('/show_qr_code/<post_id>')
+@app.route('/show_qr_code/<address>')
 @login_required
-def show_qr_code(post_id):
-    qr_code = QRCode.query.filter_by(post_id=post_id).first()
+def show_qr_code(address):
+    qr_code = QRCode.query.filter_by(post_id=address).first()
     if qr_code:
         qr_img_base64 = qr_code.image_base64
-        return render_template('qr_code.html', qr_img_base64=qr_img_base64, post_id=post_id)
     else:
-        return render_template('error.html', message='QR Code not found')
+        qr_img_base64 = qrcode_generate(address)
+
+    return render_template('qr_code.html', qr_img_base64=qr_img_base64, post_id=address)
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
 @login_required
