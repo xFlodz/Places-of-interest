@@ -1,0 +1,36 @@
+<head>
+    <link rel="stylesheet" href="../static/main.css">
+</head>
+
+{% extends 'base.html' %}
+
+{% block content %}
+{% if current_user.is_authenticated and current_user.role == 'admin' %}
+<main>
+    <body>
+        <h1 style="text-align: center;">Изменение тегов</h1>
+        <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+            <div class="tags-wrap">           
+              <div>
+                <input name="tag" type="text" placeholder="Введите тег" size="50"
+                    style="padding: 8px; background-color: white; border-radius: 20px;
+                    border: #000072 2px solid; font-size: 16;">
+                    <button name="submit" type="submit" style="margin-top: 20px;
+                    border: #000072 2px solid;">Создать</button>
+              </div>
+                <h2 style="text-align: center; margin-top: 20%;">Удаление тегов</h2>
+              <ul class="delete-tags">
+                {%for tag in tags%}
+                    <li>
+                      <a href="/delete_tags/{{tag.nametag}}">{{tag.nametag}}</a>
+                    </li>
+                {%endfor%}
+              </ul>
+            </div>
+        </form>
+    </body>
+</main>
+{% else %}
+    <meta http-equiv="refresh" content="0;URL=/" />
+{% endif %}
+{% endblock content %}

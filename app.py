@@ -1,10 +1,16 @@
-from flask import render_template, flash, request, redirect
-from models import Users, Posts, Tags, PostTags, PostImages, PostVideo
+import tempfile
+
+from flask import render_template, flash, request, redirect, abort, Response, url_for
+from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
-
-
+import qrcode
+import io
+from flask import send_file
+from flask import make_response
+from io import BytesIO
+import base64
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
@@ -61,33 +67,6 @@ def account():
         return redirect('/account')
     return render_template('account.html', name=name)
 
-
-@app.route('/timeline', methods=['POST', 'GET'])
-def timeline():
-    posts = Posts.query.order_by(Posts.left_date).all()
-    lines = []
-    for i in range(1800, 2041, 20):
-        lines.append(i)
-
-    posts_for_sort = posts.copy()
-    sorted_lines = {}
-    for line in lines:
-        this_line_posts = []
-        for post in posts_for_sort:
-            if int(post.left_date[:4]) <= line:
-                this_line_posts.append(post)
-                posts_for_sort.remove(post)
-            else:
-                sorted_lines[f'{line}'] = this_line_posts
-                break
-
-    print(sorted_lines)
-    return render_template('timeline.html', posts=posts)
-
-
-@app.route('/map', methods=['POST', 'GET'])
-def map_miigaik():
-    return render_template('map.html')
 
 
 @app.route('/tags', methods=['POST', 'GET'])
@@ -176,8 +155,6 @@ def post(address):
                 videos_list[i] = videos_list[i].video_address
     else:
         return redirect('/')
-    for i in videos_list:
-        print(i)
     return render_template('post.html', post=post, new_text=new_text, notes=notes, images=images_list, count=count, tags=tags_list, videos_list=videos_list)
 
 
@@ -282,13 +259,84 @@ def confirm_post(address):
                 post.left_date = request.form.get('left-date')
                 post.right_date = request.form.get('right-date')
                 db.session.commit()
-                return redirect(f'/post/{address}')
+                return redirect(f'/generate_qr_code/{address}')
             else:
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
     return render_template('confirm_post.html', post=post, new_text=new_text, count=count, tags=tags_list, name=current_user.name, current_date=current_date, left_date=left_date, right_date=right_date)
 
+@app.route('/generate_qr_code/<address>', methods=['GET'])
+@login_required
+def generate_qr_code(address):
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+
+    qr.add_data(f"http://192.168.0.107:8080//post/{address}")
+    qr.make(fit=True)
+    qr_img = qr.make_image(fill_color="black", back_color="white")
+
+    img_bytes = BytesIO()
+    qr_img.save(img_bytes, format='PNG')
+    img_bytes.seek(0)
+    img_base64 = base64.b64encode(img_bytes.getvalue()).decode('utf-8')
+
+    existing_qr_code = QRCode.query.filter_by(post_id=address).first()
+
+    if existing_qr_code:
+        existing_qr_code.data = f"http://192.168.0.107:8080//post/{address}"
+        existing_qr_code.image_base64 = img_base64
+    else:
+        new_qr_code = QRCode(data=f"http://192.168.0.107:8080//post/{address}", post_id=address, image_base64=img_base64)
+        db.session.add(new_qr_code)
+
+    db.session.commit()
+
+    return render_template('qr_code.html', qr_img_base64=img_base64, post_address=address)
+
+@app.route('/print_qr_code/<address>')
+@login_required
+def print_qr_code(address):
+    qr_code = QRCode.query.filter_by(post_id=address).first()
+    if qr_code:
+        img_base64 = qr_code.image_base64
+        img_bytes = base64.b64decode(img_base64)
+
+        try:
+            buffer = BytesIO()
+            buffer.write(img_bytes)
+            buffer.seek(0)
+            return send_file(buffer, mimetype='image/png', as_attachment=True, download_name='qr_code.png')
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            abort(500)
+    else:
+        abort(404)
+
+
+
+
+
+
+
+
+
+
+
+
+@app.route('/show_qr_code/<post_id>')
+@login_required
+def show_qr_code(post_id):
+    qr_code = QRCode.query.filter_by(post_id=post_id).first()
+    if qr_code:
+        qr_img_base64 = qr_code.image_base64
+        return render_template('qr_code.html', qr_img_base64=qr_img_base64, post_id=post_id)
+    else:
+        return render_template('error.html', message='QR Code not found')
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
 @login_required
@@ -396,7 +444,6 @@ def confirm_edit(address):
                     return redirect(f'/confirmpost/{address}')
             for video in videos:
                 video_url = get_html(video)
-                print(video_url)
                 post_video = PostVideo(address=address, video_address=video_url)
                 new_videos.append(post_video)
             old_videos = PostVideo.query.filter_by(address=address).all()
@@ -513,6 +560,8 @@ def all_posts():
         if filtered_posts:
             posts = filtered_posts
             posts = post_sort(posts, left_date, right_date)
+            if type_of_sort == 'date':
+                posts.reverse()
             return render_template('all_posts.html', posts=posts, tags=tags, current_date=current_date)
         else:
             posts = post_sort(posts, left_date, right_date)
