@@ -54,8 +54,10 @@
             <div class="editor-buttons">
                 <a href="/editpost/{{post.address}}"><button name="edit-post-button">Редактировать пост</button></a>
                 <a href="/deletepost/{{post.address}}"><button name="delete-post-button">Удалить пост</button></a>
+                <a href="/show_qr_code/{{ post.address }}"><button name="show_qr_code">Показать код</button></a>
             </div>
         {%endif%}
+
         </ul>
     </body>
 </main>

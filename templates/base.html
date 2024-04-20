@@ -23,12 +23,12 @@
                 <li>
                     <a href="/allposts"><img src="../static/static_images/miigaik245.png" alt="logo" class="logo" height="80px"/></a>
                 </li>
-            </ul>   
+            </ul>
 
             <div class="main-logo">
                 <a href="/allposts"><img src="../static/static_images/logo.png" alt="logo-main" height="80px" /></a>
             </div>
-            
+
             <nav>
                 <ul class="menu">
 
@@ -63,7 +63,7 @@
                     <li><a href="/allposts"><button>Все посты</button></a></li>
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/tags"><button>Теги</button></a></li>
-                   
+
                     {%endif%}
                     {% if current_user.is_authenticated and current_user.role == 'admin' %}
                     <li><a href="/register"><button>Зарегистрировать</button></a></li>
