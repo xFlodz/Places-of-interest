@@ -126,6 +126,33 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/timeline', methods=['POST', 'GET'])
+def timeline():
+    posts = Posts.query.order_by(Posts.left_date).all()
+    lines = []
+    for i in range(1800, 2041, 20):
+        lines.append(i)
+
+    posts_for_sort = posts.copy()
+    sorted_lines = {}
+    for line in lines:
+        this_line_posts = []
+        for post in posts_for_sort:
+            if int(post.left_date[:4]) <= line:
+                this_line_posts.append(post)
+                posts_for_sort.remove(post)
+            else:
+                sorted_lines[f'{line}'] = this_line_posts
+                break
+
+    print(sorted_lines)
+    return render_template('timeline.html', posts=posts)
+
+
+@app.route('/map', methods=['POST', 'GET'])
+def map_miigaik():
+    return render_template('map.html')
+
 @app.route('/post/<address>')
 def post(address):
     post = Posts.query.filter_by(address=address).first()
