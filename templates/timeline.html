@@ -8,31 +8,32 @@
 <main>
     <body>
     <form method="post" enctype="multipart/form-data">
-        
+
         <div class="timeline_wrapper">
             <nav>
-                <input type="button" value="1700">
-                <input type="button" value="1800">
-                <input type="button" value="1900">
-                <input type="button" value="2000">
+                <a href="/timeline/1700"><button name="edit-post-button">1700</button></a>
+                <a href="/timeline/1800"><button name="edit-post-button">1800</button></a>
+                <a href="/timeline/1900"><button name="edit-post-button">1900</button></a>
+                <a href="/timeline/2000"><button name="edit-post-button">2000</button></a>
             </nav>
         </div>
-        
+
         <div class="post-container">
-            <div class="year">
-                <h2>1850</h2>
-            </div>
-            {% for post in posts %}
-            {% if post.visible == 'yes' %}
-            
-            <a href="/post/{{post.address}}">
-                <div class="post">
-                    <div class="gradient"></div>
-                    <p>{{post.header}}</p>
-                    <img src="{{post.main_image}}" class="post-prev">
+            {% for k, v in sorted_lines.items() %}
+                <div class="year">
+                    <h1>{{k}}</h1>
                 </div>
-            </a>
-            {%endif%}
+                {% for post in v %}
+                    {% if post.visible == 'yes' %}
+                        <a href="/post/{{post.address}}">
+                            <div class="post">
+                                <div class="gradient"></div>
+                                <p>{{post.header}}</p>
+                                <img src="/{{post.main_image}}" class="post-prev">
+                            </div>
+                        </a>
+                    {% endif %}
+                {% endfor %}
             {% endfor %}
         </div>
     </form>
