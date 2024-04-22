@@ -135,7 +135,7 @@ def login():
 def timeline():
     posts = Posts.query.order_by(Posts.left_date).all()
     lines = []
-    for i in range(1800, 2041, 20):
+    for i in range(1700, 2041, 20):
         lines.append(i)
 
     posts_for_sort = posts.copy()
@@ -150,9 +150,46 @@ def timeline():
                 sorted_lines[f'{line}'] = this_line_posts
                 break
 
-    print(sorted_lines)
-    return render_template('timeline.html', posts=posts)
+    new_sorted_lines = {}
+    for key in sorted_lines:
+        if len(sorted_lines[key]) >= 1:
+            for post in sorted_lines[key]:
+                if post.visible == 'yes':
+                    new_sorted_lines[key] = sorted_lines[key]
+                    break
+    print(new_sorted_lines)
+    return render_template('timeline.html', sorted_lines=new_sorted_lines)
 
+
+@app.route('/timeline/<date>', methods=['POST', 'GET'])
+def timeline_range(date):
+    posts = Posts.query.order_by(Posts.left_date).all()
+    lines = []
+    for i in range(int(date), int(date)+100, 20):
+        lines.append(i)
+
+    posts_for_sort = posts.copy()
+    sorted_lines = {}
+    for line in lines:
+        this_line_posts = []
+        for post in posts_for_sort:
+            if int(post.left_date[:4]) <= line:
+                this_line_posts.append(post)
+                posts_for_sort.remove(post)
+            else:
+                sorted_lines[f'{line}'] = this_line_posts
+                break
+
+
+    new_sorted_lines = {}
+    for key in sorted_lines:
+        if len(sorted_lines[key]) >= 1:
+            for post in sorted_lines[key]:
+                if post.visible == 'yes':
+                    new_sorted_lines[key] = sorted_lines[key]
+                    break
+    print(new_sorted_lines)
+    return render_template('timeline.html', sorted_lines=new_sorted_lines)
 
 @app.route('/map', methods=['POST', 'GET'])
 def map_miigaik():
@@ -332,6 +369,7 @@ def show_qr_code(address):
         qr_img_base64 = qrcode_generate(address)
 
     return render_template('qr_code.html', qr_img_base64=qr_img_base64, post_id=address)
+
 
 @app.route('/editpost/<address>', methods=['POST', 'GET'])
 @login_required
