@@ -611,6 +611,10 @@ app.register_error_handler(401, error)
 
 if __name__ == '__main__':
     db.create_all()
+    posts = Posts.query.filter_by(visible='no')
+    for post in posts:
+        db.session.delete(post)
+        db.session.commit()
     user = Users.query.filter_by(email='admin').first()
     if user:
         pass
