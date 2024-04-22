@@ -3,14 +3,18 @@
 {% block head %}
     <div class="post-head-image">
         <link rel="stylesheet" href="../static/main.css">
-    <div>
+    </div>
 {% endblock head %}
 
 {% block content %}
-    <div class="qr-image">
-        <h1>Ваш QR-Код</h1>
-        <img src="data:image/png;base64,{{ qr_img_base64 }}" alt="QR Code">
-        <a href="{{ url_for('all_posts') }}"><button name="show_qr_code">На главную</button></a>
-        <a href="{{ url_for('print_qr_code', address=post_id) }}"><button name="download_qr_code">Скачать</button></a>
-    <div>
+    <div class="qr-wrapper">
+        <h1 style="text-align: center; padding-top: 30px;">Ваш QR-Код</h1>
+        <div class="qr-image" style="cursor: default;">
+            <img src="data:image/png;base64,{{ qr_img_base64 }}" alt="QR Code">
+        </div>
+        <div class="qr-buttons">
+            <a href="{{ url_for('all_posts') }}"><button name="show-qr-code">На главную</button></a>
+            <a href="{{ url_for('print_qr_code', address=post_id) }}"><button name="download-qr-code">Скачать</button></a>
+        </div>
+    </div>
 {% endblock %}
