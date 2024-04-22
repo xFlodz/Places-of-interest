@@ -1,15 +1,8 @@
-import tempfile
-
-from flask import render_template, flash, request, redirect, abort
+from flask import render_template, flash, request, redirect, abort, send_file
 from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
-import qrcode
-
-
-from flask import send_file
-from flask import make_response
 from io import BytesIO
 import base64
 
