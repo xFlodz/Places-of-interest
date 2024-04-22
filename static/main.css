@@ -155,14 +155,17 @@ img.centered {
 .post-container{
     left: 0;
     top: 0;
-    margin: 40px 200px;
+    margin: 40px 220px;
     justify-content: space-around;
     align-content: flex-start;
     flex-wrap: wrap;
     height: 100%;
     flex-direction: row;
     padding-bottom: 80px;
-    padding-left: 100px;
+    padding-left: 80px;
+    z-index: 0;
+    background-color:rgba(255, 255, 255, 0.68);
+    border-radius: 20px;
 }
 
 .post-container a{
@@ -170,6 +173,7 @@ img.centered {
     margin-bottom: 80px;
     text-decoration: none;
     cursor: default;
+    z-index: 2;
 }
 
 .post{
@@ -461,7 +465,7 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 
 .filter{
     position: absolute;
-    margin-top: 50;
+    margin-top: 90;
     left: 0;
     padding: 0;
     margin-right: 100px;
@@ -567,8 +571,11 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 }
 
 .dropdown{
+    margin-left: 20px;
+    width: 180px;
+    margin-top: 50px;
     position: absolute;
-    transition: 0.2s;
+
 }
 
 .dropdown + div{
@@ -579,7 +586,7 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 .dropdown button{
     padding: 5px 10px;
     text-align: center;
-    width: 150px;
+    width: 180px;
     border: #000072 solid 2px;
     border-radius: 20px;
     background-color: white;
@@ -592,9 +599,11 @@ button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover{
 }
 
 .active button {
+    margin-left: 20px;
+    margin-top: 50px;
     padding: 5px 10px;
     text-align: center;
-    width: 200px;
+    width: 180px;
     border: #000072 solid 2px;
     border-radius: 20px;
     background-color: white;
@@ -676,7 +685,7 @@ iframe{
     justify-content: space-between;
 }
 
-.timeline_wrapper button{
+.timeline_wrapper input{
     justify-content: center;
     display: flex;
     border: 2px solid #000072;
@@ -688,7 +697,7 @@ iframe{
     font-weight: 500;
 }
 
-.timeline_wrapper button:hover{
+.timeline_wrapper input:hover{
     background-color: #000072;
     color: white;
 }
