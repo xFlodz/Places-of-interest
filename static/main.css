@@ -751,6 +751,11 @@ iframe{
     flex-direction: row;
 }
 
+#map{
+    height: 800px;
+    width: 1500px;
+}
+
 @media only screen and (max-device-width: 1800px) and (min-device-width: 120px){
     .tutorial{
         width: 150px;
