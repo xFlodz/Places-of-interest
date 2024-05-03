@@ -1,4 +1,3 @@
-import os
 from models import PostImages
 from __init__ import db
 ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png']

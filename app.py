@@ -1,5 +1,5 @@
 from flask import render_template, flash, request, redirect, abort, send_file
-from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode
+from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode, GeoQuest, SaveGeoQuestProgress
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
@@ -23,6 +23,7 @@ from list_create import create_images_list, create_videos_list
 from qr_code import qrcode_generate
 
 
+
 @app.route('/')
 def index():
     return redirect('/allposts')
@@ -34,10 +35,16 @@ def register():
     if request.method == 'POST':
         login = request.form.get('login')
         name = request.form.get('name')
-        if login is None:
+        surname = request.form.get('surname')
+        thirdname = request.form.get('thirdname')
+        if login == '' or '@' not in login:
             flash('Введите логин', 'danger')
-        elif name is None:
-            flash('Введите ФИО', 'danger')
+        elif surname == '':
+            flash('Введите Фамилию', 'danger')
+        elif name == '':
+            flash('Введите Имя', 'danger')
+        elif thirdname == '':
+            flash('Введите Отчество', 'danger')
         else:
             user = Users.query.filter_by(email=login).first()
             if user:
@@ -47,7 +54,8 @@ def register():
                 flash(f'Пароль {password}', 'success')
                 mailsend(login, password)
                 password = generate_password_hash(password)
-                user = Users(email=login, password=password, role='poster', name=name)
+                user = Users(email=login, password=password, role='poster', name=name, surname=surname,
+                             thirdname=thirdname)
                 db.session.add(user)
                 db.session.commit()
     return render_template('register.html')
@@ -59,11 +67,13 @@ def account():
     name = current_user.name
     if request.method == 'POST':
         name = request.form.get('name')
-        current_user.name = name
+        surname = request.form.get('surname')
+        thirdname = request.form.get('thirdname')
+        current_user.name, current_user.surname, current_user.thirdname = name, surname, thirdname
         db.session.commit()
         flash('Вы успешно изменили имя', 'success')
         return redirect('/account')
-    return render_template('account.html', name=name)
+    return render_template('account.html')
 
 
 
@@ -184,9 +194,161 @@ def timeline_range(date):
     print(new_sorted_lines)
     return render_template('timeline.html', sorted_lines=new_sorted_lines)
 
+
 @app.route('/map', methods=['POST', 'GET'])
 def map_miigaik():
     return render_template('map.html')
+
+#Регистрация для обычных пользователей(геоквест)
+@app.route('/registration', methods=['POST', 'GET'])
+def registration():
+
+    if current_user.is_authenticated:
+        print('12312')
+        return redirect('/all_posts')
+
+    if request.method == 'POST':
+        login = request.form.get('login')
+        name = request.form.get('name')
+        surname = request.form.get('surname')
+        thirdname = request.form.get('thirdname')
+        password1 = request.form.get('password1')
+        password2 = request.form.get('password1')
+
+        if login == '' or '@' not in login:
+            flash('Неверно введена почта', 'danger')
+
+        elif surname == '':
+            flash('Введите Фамилию', 'danger')
+
+        elif name == '':
+            flash('Введите Имя', 'danger')
+
+        elif thirdname == '':
+            flash('Введите Отчество', 'danger')
+
+        elif password1 == '':
+            flash('Введите пароль', 'danger')
+
+        elif password2 == '':
+            flash('Введите пароль', 'danger')
+
+        else:
+            user = Users.query.filter_by(email=login).first()
+            if user:
+                flash('Пользователь уже существует', 'danger')
+            else:
+                if password1 == password2:
+                    if len(password1) < 10:
+                        flash('Длина пароля должна быть больше 10 символов', 'danger')
+                    else:
+                        try:
+                            mailsend(login, password1)
+                            password = generate_password_hash(password1)
+                            user = Users(email=login, password=password, role='user', name=name, surname=surname,
+                                         thirdname=thirdname)
+                            db.session.add(user)
+                            db.session.commit()
+                            flash('Пользователь успешно зарегистрирован', 'success')
+                            return redirect('/login')
+                        except Exception as e:
+                            flash('Неверно введена почта', 'danger')
+
+    return render_template('/registration.html')
+
+@app.route('/questions', methods=['POST', 'GET'])
+def questions():
+    is_exist_quest = GeoQuest.query.filter_by(id=1).all()
+    for i in is_exist_quest:
+        qsts = i.questions
+        ans = i.answers
+        qsts = qsts.split('^')
+        ans = ans.split('^')
+
+    if request.method == 'POST':
+        quests = ''
+        answers = ''
+        for i in range(10):
+            question = request.form.get(f'question{i}')
+            answer = request.form.get(f'answer{i}')
+
+            if question == '' or answer == '':
+                flash('Не должно быть пустых ответов/вопросов', 'danger')
+                return redirect('/questions')
+
+            quests += f'{question}^'
+            answers += f'{answer}^'
+
+        if is_exist_quest:
+            for i in is_exist_quest:
+                i.questions = quests
+                i.answers = answers
+                db.session.commit()
+        else:
+            new_quest = GeoQuest(questions=quests, answers=answers)
+            db.session.add(new_quest)
+            db.session.commit()
+
+        flash('Квест успешно создан!', 'success')
+        return redirect('/questions')
+
+    if not is_exist_quest:
+        quest_for_output = GeoQuest(questions=[], answers=[])
+        qsts = quest_for_output.questions
+        ans = quest_for_output.answers
+    return render_template('questions.html', questions=qsts, answers=ans)
+
+@app.route('/geoquest', methods=['POST', 'GET'])
+def geoquest():
+    if not current_user.is_authenticated:
+        return redirect('/login')
+
+    is_exist_quest = GeoQuest.query.filter_by(id=1).all()
+    for i in is_exist_quest:
+        quests = i.questions
+        answers = i.answers
+
+        quest = quests.split('^')
+        quest.remove('')
+        answers = answers.split('^')
+        answers.remove('')
+
+    current_user_progress = SaveGeoQuestProgress.query.filter_by(user=current_user.email).all()
+    this_user_answers = []
+    if not current_user_progress:
+        this_user_answers = ['' for i in range(10)]
+    for i in current_user_progress:
+        this_user_answers.append(i.answer)
+    print(this_user_answers)
+
+    right_questions = []
+    for i in range(len(answers)):
+        if this_user_answers[i] == answers[i]:
+            right_questions.append(i)
+
+    if request.method == 'POST':
+        for i in range(len(quest)):
+            answer = request.form.get(f'answer{i}')
+            this_user_check_answers = SaveGeoQuestProgress.query.filter_by(user=current_user.email, question_number=i).all()
+            if not this_user_check_answers:
+                new_answer = SaveGeoQuestProgress(user=current_user.email, question_number=i, answer=answer)
+                db.session.add(new_answer)
+            else:
+                for i in this_user_check_answers:
+                    i.answer = answer
+
+        db.session.commit()
+        return redirect('/geoquest')
+
+
+    length = []
+    for i in range(len(quest)):
+        length.append(i)
+
+    print(right_questions)
+    return render_template('geoquest.html', questions=quest, length=length, right_questions=right_questions,
+                           this_user_answers=this_user_answers)
+
 
 @app.route('/post/<address>')
 def post(address):
@@ -326,7 +488,9 @@ def confirm_post(address):
                 flash('Добавьте картинки', 'danger')
         else:
             flash('Добавьте описания', 'danger')
-    return render_template('confirm_post.html', post=post, new_text=new_text, count=count, tags=tags_list, name=current_user.name, current_date=current_date, left_date=left_date, right_date=right_date)
+    return render_template('confirm_post.html', post=post, new_text=new_text, count=count, tags=tags_list,
+                           name=f'{current_user.surname} {current_user.name[0]}. {current_user.thirdname[0]}.',
+                           current_date=current_date, left_date=left_date, right_date=right_date)
 
 @app.route('/generate_qr_code/<address>', methods=['GET'])
 @login_required

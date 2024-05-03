@@ -34,7 +34,7 @@
 
                     <li>
                         {% if current_user.is_authenticated %}
-                            <li><a href="/account"><button>{{current_user.name}}</button></a></li>
+                            <li><a href="/account"><button>{{current_user.surname}} {{current_user.name[0]}}. {{current_user.thirdname[0]}}.</button></a></li>
                         {%else%}
                             <li><a href="/login"><button>Войти</button></a></li>
                         {%endif%}
@@ -44,6 +44,7 @@
                             <div class="menu-dropdown-content">
                                 <a href="/allposts"><button>Статьи</button></a>
                                 <a href="/timeline"><button>Таймлайн</button></a>
+                                <a href="/geoquest"><button>Геоквест</button></a>
                                 <!--<a href="/timeline"><button>Карта</button></a>-->
                                 {% if current_user.is_authenticated and current_user.role == 'poster' %}
                                     <a href="/createpost"><button>Создать пост</button></a>
@@ -51,6 +52,7 @@
                                 {% if current_user.is_authenticated and current_user.role == 'admin' %}
                                     <a href="/tags"><button>Теги</button></a>
                                     <a href="/register"><button>Зарегистрировать</button></a>
+                                    <a href="/questions"><button>Вопросы геоквеста</button></a>
                                 {%endif%}
                                 {%if current_user.is_authenticated%}
                                 <a href="/logout" style="margin-bottom: 10px;"><button>Выйти</button></a>
