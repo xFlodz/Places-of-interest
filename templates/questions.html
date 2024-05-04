@@ -14,12 +14,13 @@
     <body>
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
-              <ul>
+              <ul style="width: 40%;">
                   {%for i in range(10)%}
-                <h1>Вопрос {{i+1}}</h1>
-                <li><input name="question{{i}}" type="text" placeholder="Введите вопрос" value="{{questions[i]}}" size="50"
+                <h1 style="text-align: center;">Вопрос {{i+1}}</h1>
+                <li>
+                    <textarea name="question{{i}}" type="text" placeholder="Введите вопрос" value="{{questions[i]}}" size="150"
                     style="padding: 8px; background-color: white; border-radius: 20px;
-                    border: #000072 2px solid; font-size: 16;"></li>
+                    border: #000072 2px solid; font-size: 16;" rows="5"></textarea></li>
                 <li><input name="answer{{i}}" type="text" placeholder="Введите ответ" value="{{answers[i]}}" size="50"
                     style="padding: 8px; background-color: white; border-radius: 20px;
                     border: #000072 2px solid; font-size: 16;"></li>

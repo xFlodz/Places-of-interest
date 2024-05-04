@@ -15,18 +15,12 @@
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
               <ul>
-                <h1>Фамилия</h1>
-                <li><input name="surname" type="text" value="{{current_user.surname}}" size="50"
-                    style="padding: 8px; background-color: white; border-radius: 20px;
-                    border: #000072 2px solid; font-size: 16;"></li>
-                <h1>Имя</h1>
-                <li><input name="name" type="text" value="{{current_user.name}}" size="50"
-                    style="padding: 8px; background-color: white; border-radius: 20px;
-                    border: #000072 2px solid; font-size: 16;"></li>
-                <h1>Отчество</h1>
-                <li><input name="thirdname" type="text" value="{{current_user.thirdname}}" size="50"
-                    style="padding: 8px; background-color: white; border-radius: 20px;
-                    border: #000072 2px solid; font-size: 16;"></li>
+                <h2>Фамилия</h2>
+                <li><input name="surname" type="text" value="{{current_user.surname}}" size="50"></li>
+                <h2>Имя</h2>
+                <li><input name="name" type="text" value="{{current_user.name}}" size="50"></li>
+                <h2>Отчество</h2>
+                <li><input name="thirdname" type="text" value="{{current_user.thirdname}}" size="50"></li>
                 <button name="submit" type="submit" style="margin-top: 20px;
                 border: #000072 2px solid;">Изменить имя</button></li>
               </ul>

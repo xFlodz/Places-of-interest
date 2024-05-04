@@ -5,9 +5,17 @@
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         #map{
-            position: absolute;
-            height: 1000px;
-            width: 1000px;
+            position: fixed;
+            height: 65%;
+            width: 60%;
+            left: 35%;
+            top: 18%;
+            margin: 30px;
+        }
+        button[name="submit-question"]{
+            position: fixed;
+            right:5%;
+            bottom: 5%;
         }
     </style>
 </head>
@@ -18,20 +26,24 @@
 
 <main>
     <body>
-        <div id="map" style = "display: none"></div>
+        <div id="map"></div>
+
         <div class="createpost">
         <form method="post" enctype="multipart/form-data">
-            {% for i in length %}
-            <h1>{{questions[i]}}</h1>
-            {% if i in right_questions%}
-            <h1>right answer</h1>
-            {%endif%}
-            <li><input name="answer{{i}}" type="text" value="{{this_user_answers[i]}}" placeholder="Ответ" size="50"
-                style="padding: 8px; background-color: white; border-radius: 20px;
-                border: #000072 2px solid; font-size: 16;"></li>
-            {% endfor %}
-            <button name="submit" type="submit" style="margin-top: 20px;
-                border: #000072 2px solid;">Проверить ответы</button></li>
+            <div class="answer-wrapper">
+                {% for i in length %}
+                <h3>{{questions[i]}}</h3>
+                <li style="list-style: none;">
+                    <input class="answer-input" name="answer{{i}}" type="text" value="{{this_user_answers[i]}}" placeholder="Ответ" size="35">
+                    {% if i in right_questions%}
+                    <label class="answer-checkbox">✔️</label>
+                    {%else%}
+                    <label class="answer-checkbox">❌</label>
+                    {%endif%}
+                </li>
+                {% endfor %}
+                <button name="submit-question" type="submit">Проверить ответы</button></li>
+            </div>
         </form>
         </div>
 
