@@ -2,6 +2,15 @@
   <link rel="stylesheet" href="../static/main.css">  
 </head>
 
+<style>
+  a[href="/registration"]{
+    position: absolute;
+    top: 65%;
+    margin-top: 2%;
+    font-size: 18px;
+  }
+</style>
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -25,9 +34,9 @@
         <h2>Войти</h2>
         <input name="login" type="text" placeholder="Введите логин" size="50">
         <input name="password" type="password" placeholder="Введите пароль" size="50">
-        <button name="register-self" type="submit" style="margin-bottom: 0;">Зарегистрироваться</button>
         <button name="submit" type="submit">Войти</button>
       </form>
+      <a href="/registration" name="register-self" type="submit" style="margin-bottom: 0;">Зарегистрироваться</a>
     </div>
   </body>
 </main>
