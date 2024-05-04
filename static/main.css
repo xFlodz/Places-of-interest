@@ -5,6 +5,10 @@
     font-family: roboto;
 }
 
+button{
+    cursor: pointer;
+}
+
 body{
     padding-top: 80px;
     background-color: rgb(228, 227, 227);
@@ -428,7 +432,8 @@ button[name="download-qr-code"],button[name="show-qr-code"]{
 }
 
 button[name="edit-post-button"]:hover,button[name="delete-post-button"]:hover,button[name="show-qr-code"]:hover,
-button[name="download-qr-code"]:hover, button[name="submit-question"]:hover{
+button[name="download-qr-code"]:hover, button[name="submit-question"]:hover,
+button[name="show-qr-code"]:hover{
     background-color: #000072;
     color: white;
 }
@@ -760,7 +765,7 @@ iframe{
     list-style: none;
 }
 
-input[type="text"]{
+input[type="text"], input[type="password"]{
     padding: 8px;
     border-radius: 20px;
     background-color: white;
