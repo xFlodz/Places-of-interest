@@ -144,7 +144,6 @@ def timeline():
     posts_for_sort = posts.copy()
     sorted_lines = {}
     for line in lines:
-        print(line, 'line')
         this_line_posts = []
         for post in posts_for_sort:
             if int(post.left_date[:4]) <= line:
@@ -160,7 +159,15 @@ def timeline():
                     new_sorted_lines[key] = sorted_lines[key]
                     break
     print(new_sorted_lines)
-    return render_template('timeline.html', sorted_lines=new_sorted_lines)
+
+    start_text = []
+    for k,v in new_sorted_lines.items():
+        if v is not None:
+            for post in v:
+                new_text = edit_text(post.text)
+                first_100_letters = f'{new_text[0][:100]}...'
+                start_text.append(first_100_letters)
+    return render_template('timeline.html', sorted_lines=new_sorted_lines, start_text=start_text)
 
 
 @app.route('/timeline/<date>', methods=['POST', 'GET'])
@@ -189,7 +196,15 @@ def timeline_range(date):
                     new_sorted_lines[key] = sorted_lines[key]
                     break
     print(new_sorted_lines)
-    return render_template('timeline.html', sorted_lines=new_sorted_lines)
+
+    start_text = []
+    for k,v in new_sorted_lines.items():
+        if v is not None:
+            for post in v:
+                new_text = edit_text(post.text)
+                first_100_letters = f'{new_text[0][:100]}...'
+                start_text.append(first_100_letters)
+    return render_template('timeline.html', sorted_lines=new_sorted_lines, start_text=start_text)
 
 
 @app.route('/map', methods=['POST', 'GET'])
