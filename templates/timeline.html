@@ -17,6 +17,7 @@
             </nav>
         </div>
         <form method="post" enctype="multipart/form-data">
+        {% set count = namespace(a=0) %}
         {% for k, v in sorted_lines.items() %}
         <div>
             <h3 style="margin: 0px 100px; width: 80px; text-align: center; margin-top: 5%;" class="timeline-post-date">{{k}}</h3>
@@ -30,7 +31,9 @@
                                     <h1>{{post.header}}</h1>
                                 </li>
                                 <li>
-                                    <h3>{{post.text[0:100]}}...</h3>
+                                    <h3>{{start_text[count.a]}}</h3>
+                                    <h1>{{count.a}}</h1>
+                                    {% set count.a = count.a + 1 %}
                                 </li>
                             </div>
                         </a>
