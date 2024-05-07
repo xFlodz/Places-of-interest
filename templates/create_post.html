@@ -17,14 +17,14 @@
             <div class="filter">
                 <ul>
                     {%for tag in tags %}
-                        <li><input type="checkbox" name="{{tag.nametag}}">{{tag.nametag}}</li>
+                        <li style="display: block;"><input type="checkbox" name="{{tag.nametag}}">{{tag.nametag}}</li>
                     {%endfor%}
                 </ul>
             </div>
     {%endif%}
         <div class="tutorial">
-          <a>Введите "$" чтоб вставить картинку в текст</a>
-          <a>Введите "&" чтоб вставить видео в текст</a>
+          <a>Введите "$" чтоб вставить картинку в текст;</a>
+          <a>Введите "&" чтоб вставить видео в текст.</a>
         </div>
         <div class="createpost">
               <ul>

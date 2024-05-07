@@ -2,6 +2,7 @@
     <link rel="stylesheet" href="../static/main.css">
 </head>
 
+
 {% extends 'base.html' %}
 
 
@@ -18,20 +19,20 @@
         <div class="createpost">
             <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
                 {%if tags %}
-                <div class="post-container">
+                <div class="post-container" style="padding-left: 0%;">
                     <div class="filter">
                         <ul>
                             {%for tag in tags %}
                             {%if tag in titps%}
-                                <li><input type="checkbox" name="{{tag}}" checked>{{tag}}</li>
+                                <li style="display: block;"><input type="checkbox" name="{{tag}}" checked>{{tag}}</li>
                             {%else%}
-                                <li><input type="checkbox" name="{{tag}}">{{tag}}</li>
+                                <li style="display: block;"><input type="checkbox" name="{{tag}}">{{tag}}</li>
                             {%endif%}
                             {%endfor%}
                         </ul>
                     </div>
                 {%endif%}
-                <ul>
+                <ul style="padding: 0% 5%;">
                     <li><input name="header" type="text" size="50" value="{{post.header}}"></li>
                     <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
                         <img src="/{{image}}" name="text-img">
