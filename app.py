@@ -144,14 +144,13 @@ def timeline():
     posts_for_sort = posts.copy()
     sorted_lines = {}
     for line in lines:
+        print(line, 'line')
         this_line_posts = []
         for post in posts_for_sort:
             if int(post.left_date[:4]) <= line:
                 this_line_posts.append(post)
                 posts_for_sort.remove(post)
-            else:
-                sorted_lines[f'{line}'] = this_line_posts
-                break
+        sorted_lines[f'{line}'] = this_line_posts
 
     new_sorted_lines = {}
     for key in sorted_lines:
@@ -179,9 +178,7 @@ def timeline_range(date):
             if int(post.left_date[:4]) <= line:
                 this_line_posts.append(post)
                 posts_for_sort.remove(post)
-            else:
-                sorted_lines[f'{line}'] = this_line_posts
-                break
+        sorted_lines[f'{line}'] = this_line_posts
 
 
     new_sorted_lines = {}
@@ -296,6 +293,8 @@ def questions():
         quest_for_output = GeoQuest(questions=[], answers=[])
         qsts = quest_for_output.questions
         ans = quest_for_output.answers
+    print(ans)
+    print(qsts)
     return render_template('questions.html', questions=qsts, answers=ans)
 
 @app.route('/geoquest', methods=['POST', 'GET'])
