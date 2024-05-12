@@ -14,7 +14,8 @@
         </div>
         <div class="qr-buttons">
             <a href="{{ url_for('all_posts') }}"><button name="show-qr-code">На главную</button></a>
-            <a href="{{ url_for('print_qr_code', address=post_id) }}"><button name="download-qr-code">Скачать</button></a>
+            <a href="{{ url_for('print_qr_code_as_pdf', address=post_id) }}"><button name="download-qr-code">Скачать</button></a>
+
         </div>
     </div>
 {% endblock %}
