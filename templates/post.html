@@ -18,13 +18,13 @@
                     <div class="video-wrapper">
                          <iframe width="560" height="315" src="https://www.youtube.com/embed/{{videos_list[i]}}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
                     </div>
-                    {%elif new_text[i] == '#image#' %}
+                    {% elif new_text[i] == '#image#' %}
                         <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
                             <img src="/{{images[i]}}" name="text-img">
                         </div>
-                        <p name="notes">{{notes[i]}}</p>
-                    {%else%}
-                        <p style="white-space: pre-wrap; word-wrap: break-word;">{{new_text[i]}}</p>
+                        <p class="image-description">{{notes[i]}}</p>
+                    {% else %}
+                        <p style="white-space: pre-wrap; word-wrap: break-word;">{{ new_text[i] | safe }}</p>
                     {%endif%}
                 {%endif%}
             {%endfor%}
