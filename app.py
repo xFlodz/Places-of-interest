@@ -1,12 +1,14 @@
-from flask import render_template, flash, request, redirect, abort, send_file
+from flask import render_template, flash, request, redirect, abort, send_file, current_app
 from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode, GeoQuest, SaveGeoQuestProgress
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
-from io import BytesIO
 import base64
-
-
+from reportlab.pdfgen import canvas
+from reportlab.lib.units import inch
+from reportlab.lib.pagesizes import letter
+from reportlab.lib.utils import ImageReader
+from io import BytesIO
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
@@ -128,8 +130,6 @@ def login():
             if check_password_hash(user.password, password):
                 login_user(user)
                 return redirect('/allposts')
-            else:
-                flash('Неверный пароль', 'danger')
         else:
             flash('Пользователь не существует', 'danger')
 
@@ -514,23 +514,29 @@ def generate_qr_code(address):
     img_base64 = qrcode_generate(address)
     return render_template('qr_code.html', qr_img_base64=img_base64, post_address=address)
 
-@app.route('/print_qr_code/<address>')
+
+@app.route('/print_qr_code_as_pdf/<address>')
 @login_required
-def print_qr_code(address):
+def print_qr_code_as_pdf(address):
     qr_code = QRCode.query.filter_by(post_id=address).first()
     if qr_code:
         img_base64 = qr_code.image_base64
         img_bytes = base64.b64decode(img_base64)
         try:
-            buffer = BytesIO()
-            buffer.write(img_bytes)
-            buffer.seek(0)
-            return send_file(buffer, mimetype='image/png', as_attachment=True, download_name='qr_code.png')
+            pdf_buffer = BytesIO()
+            c = canvas.Canvas(pdf_buffer, pagesize=letter)
+            qr_img = ImageReader(BytesIO(img_bytes))
+            c.drawImage(qr_img, 1.3 * inch, 2 * inch, width=6 * inch, height=6 * inch)
+            img_path = current_app.root_path + '/static/qr_image/logo_qr.png'
+            c.drawImage(img_path, 1.3 * inch, 8 * inch, width=6.2 * inch, height=2 * inch)
+            c.save()
+            pdf_buffer.seek(0)
+            return send_file(pdf_buffer, mimetype='application/pdf', as_attachment=True, download_name='qr_code.pdf')
         except Exception as e:
+            print(e)
             abort(500)
     else:
         abort(404)
-
 
 @app.route('/show_qr_code/<address>')
 @login_required
@@ -604,7 +610,7 @@ def edit_post(address):
             return redirect(f'/confirmedit/{address}')
         else:
             flash('Картинка не может быть такого типа', 'danger')
-    return render_template('edit_post.html', post=post, tags=tags_list, titps=tags_in_this_post_list, image=main_image_in_post)
+    return render_template('edit_post.html', post=post, tags=tags, titps=tags_in_this_post_list, image=main_image_in_post)
 
 
 @app.route('/confirmedit/<address>', methods=['POST', 'GET'])
