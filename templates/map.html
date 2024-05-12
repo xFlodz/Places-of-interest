@@ -26,14 +26,28 @@
         </form>
 
         <script>
-            var map = L.map('map').setView([55.763904410941514, 37.662084744656916], 19);
+            var map = L.map('map').setView([55.763904410941514, 37.662084744656916], 18);
             L.tileLayer('https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz', {
                 maxZoom: 25,
                 attribution: 'https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz',
                 dragging: false
             }).addTo(map);
             map.attributionControl.setPrefix('');
-            var marker = L.marker([55.763, 37.662]).addTo(map);
+            var marker1 = L.marker([55.764664477516874,37.66195483042114])
+                marker1.bindPopup('<a href="../post/6ZHALKnS0K6Bgesu">Музейный комплекс МИИГАиК</a>').openPopup();
+                marker1.addTo(map);
+            var marker2 = L.marker([55.76453435003299,37.661489023593056])
+                marker2.bindPopup('<a href="../post/gnqRBvb5aRLQ26rX">Факультет архитектуры и градостроительства</a>').openPopup();
+                marker2.addTo(map);
+            var marker3 = L.marker([55.76414997777347,37.6613957455457])
+                marker3.bindPopup('<a href="../post/CgME7zWFWlVBHItz">Факультет управления территориями</a>').openPopup();
+                marker3.addTo(map);
+            var marker4 = L.marker([55.763525509428774,37.662039052913634])
+                marker4.bindPopup('<a href="../post/L1eDFN15TRSvs0NQ">История развития – МИИГАиК</a>').openPopup();
+                marker4.addTo(map);
+            var marker5 = L.marker([55.763536851348526,37.662210043738334])
+                marker5.bindPopup('<a href="../post/GQnm8kHF6UyaAAMe">Военный учебный центр МИИГАиК</a>').openPopup();
+                marker5.addTo(map);
         </script>
     </body>
 </main>
