@@ -50,11 +50,11 @@
         <script>
             var map = L.map('map').setView([55.763904410941514, 37.662084744656916], 19);
             L.tileLayer('https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz', {
-                maxZoom: 19,
+                maxZoom: 25,
                 attribution: 'https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz',
                 dragging: false
             }).addTo(map);
-
+            map.attributionControl.setPrefix('');
         </script>
     </body>
 </main>

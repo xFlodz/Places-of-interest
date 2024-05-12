@@ -20,13 +20,15 @@
         {% set count = namespace(a=0) %}
         {% for k, v in sorted_lines.items() %}
         <div>
-            <h3 style="margin: 0px 100px; width: 80px; text-align: center; margin-top: 5%;" class="timeline-post-date">{{k}}</h3>
-            <div class="timeline-post">
-                <img src="../static/static_images/down-arrow.jpg" alt="arrow-down" class="down-arrow"/>
-                <ul style="list-style: none;">
-                    {% for post in v %}
-                    {% if post.visible == 'yes' %}
-                        <a href="/post/{{post.address}}">
+            <h3 style="margin: 0px 90px; width: 80px; text-align: center; margin-top: 5%; font-size: 18px;" 
+            class="timeline-post-date">{{k}}</h3> <!--Заголовок - год постов-->
+            {% for post in v %}
+            {% if post.visible == 'yes' %}
+            <div class="timeline-post"> <!--Контейнер под посты, входящие в данный временной промежуток-->
+                    <img src="../static/static_images/arrow-point-down.jpg" alt="arrow-down" 
+                    class="down-arrow"/>
+                <ul style="list-style: none;"> <!--Контейнер список для одного конкретного поста-->
+                        <a href="/post/{{post.address}}" name="timeline-post-href">
                                 <li>
                                     <h1>{{post.header}}</h1>
                                 </li>

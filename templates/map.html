@@ -5,9 +5,12 @@
      <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         #map{
+            display: flex;
+            align-content: center;
+            justify-content: center;
             position: absolute;
-            height: 1000px;
-            width: 1000px;
+            height: 80%;
+            width: 90%;
         }
     </style>
 </head>
@@ -25,11 +28,12 @@
         <script>
             var map = L.map('map').setView([55.763904410941514, 37.662084744656916], 19);
             L.tileLayer('https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz', {
-                maxZoom: 19,
+                maxZoom: 25,
                 attribution: 'https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png?key=AFCeTF9aUfdqHYYC77tz',
                 dragging: false
             }).addTo(map);
-
+            map.attributionControl.setPrefix('');
+            var marker = L.marker([55.763, 37.662]).addTo(map);
         </script>
     </body>
 </main>
