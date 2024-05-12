@@ -1,11 +1,9 @@
 <head>
     <link rel="stylesheet" href="../static/main.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
-
 {% extends 'base.html' %}
-
-
 
 {% block content %}
 {% if current_user.is_authenticated and current_user.role == 'poster' %}
@@ -13,40 +11,40 @@
 <main>
     <h1 style="text-align: center;">Редактирование статьи</h1>
     <body>
+    <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
+    {%if tags %}
+            <div class="filter">
+                <ul>
+                    {%for tag in tags %}
+                        <li style="display: block;"><input type="checkbox" name="{{tag.nametag}}">{{tag.nametag}}</li>
+                    {%endfor%}
+                </ul>
+            </div>
+    {%endif%}
+
         <div class="tutorial">
-            <a>Текст с правилами по созданию поста</a>
+          <a>Введите "$" чтоб вставить картинку в текст;</a>
+          <a>Введите "%" чтоб вставить видео в текст.</a>
         </div>
         <div class="createpost">
-            <form method="post" enctype="multipart/form-data" class="post-creation-wrapper">
-                {%if tags %}
-                <div class="post-container" style="padding-left: 0%;">
-                    <div class="filter">
-                        <ul>
-                            {%for tag in tags %}
-                            {%if tag in titps%}
-                                <li style="display: block;"><input type="checkbox" name="{{tag}}" checked>{{tag}}</li>
-                            {%else%}
-                                <li style="display: block;"><input type="checkbox" name="{{tag}}">{{tag}}</li>
-                            {%endif%}
-                            {%endfor%}
-                        </ul>
+              <ul>
+                <li><input name="header" type="text" placeholder="Введите Заголовок" size="50" value="{{ post.header }}">
+                <li><label style="font-size: 16px;">Выберете отображаемое на странице изображение для статьи:&nbsp&nbsp&nbsp</label><input name="main-image" type="file"></li>
+                <li>
+                    <div class="editor-container">
+                        <div id="editor"></div>
+                        <textarea id="text" name="text" style="display: none;">{{ post.text }}</textarea>
                     </div>
-                {%endif%}
-                <ul style="padding: 0% 5%;">
-                    <li><input name="header" type="text" size="50" value="{{post.header}}"></li>
-                    <div class="post-head-image" onclick="this.className = (this.className =='post-head-image' ? 'post-head-image-pop' : 'post-head-image')">
-                        <img src="/{{image}}" name="text-img">
-                    </div>
-                    <li><input name="main-image" type="file"></li>
-                    <li><textarea name="text" type="text" id="post-text" cols="120" rows="20">{{post.text}}</textarea></li>
-                        <button name="submit" type="submit">Далее</button>
-                    </li>
-                </ul>
-            </form>
+                </li>
+                <button name="submit" type="submit">Далее</button></li>
+              </ul>
         </div>
+    </form>
     </body>
 </main>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 {% else %}
-<meta http-equiv="refresh" content="0;URL=/" />
+    <meta http-equiv="refresh" content="0;URL=/" />
 {% endif %}
 {% endblock content %}

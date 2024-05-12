@@ -1,10 +1,9 @@
 <head>
     <link rel="stylesheet" href="../static/main.css">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 
 {% extends 'base.html' %}
-
-
 
 {% block content %}
 {% if current_user.is_authenticated and current_user.role == 'poster' %}
@@ -22,21 +21,29 @@
                 </ul>
             </div>
     {%endif%}
+
         <div class="tutorial">
           <a>Введите "$" чтоб вставить картинку в текст;</a>
-          <a>Введите "&" чтоб вставить видео в текст.</a>
+          <a>Введите "%" чтоб вставить видео в текст.</a>
         </div>
         <div class="createpost">
               <ul>
                 <li><input name="header" type="text" placeholder="Введите Заголовок" size="50"></li>
                 <li><label style="font-size: 16px;">Выберете отображаемое на странице изображение для статьи:&nbsp&nbsp&nbsp</label><input name="main-image" type="file"></li>
-                <li><textarea name="text" type="text" id="post-text" placeholder="Введите текст статьи" cols="120" rows="20"></textarea></li>
+                <li>
+                    <div class="editor-container">
+                        <div id="editor"></div>
+                        <textarea id="text" name="text" style="display: none;"></textarea>
+                    </div>
+                </li>
                 <button name="submit" type="submit">Далее</button></li>
               </ul>
         </div>
     </form>
     </body>
 </main>
+
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 {% else %}
     <meta http-equiv="refresh" content="0;URL=/" />
 {% endif %}
