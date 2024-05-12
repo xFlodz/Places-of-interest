@@ -3,12 +3,15 @@ from models import Users, Posts, Tags, PostTags, PostImages, PostVideo, QRCode, 
 from flask_login import login_required, login_user, logout_user, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from sqlalchemy import desc
+import re
 import base64
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import inch
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
 from io import BytesIO
+
+
 from __init__ import db, app, manager
 from address_generator import create_address
 from password_generator import create_password
@@ -141,7 +144,8 @@ def timeline():
     posts = Posts.query.order_by(Posts.left_date).all()
     lines = []
     for i in range(1700, 2041, 20):
-        lines.append(i)
+        if int(i) < 2039:
+            lines.append(i)
 
     posts_for_sort = posts.copy()
     sorted_lines = {}
@@ -167,6 +171,7 @@ def timeline():
         if v is not None:
             for post in v:
                 new_text = edit_text(post.text)
+                new_text[0] = re.sub('<[^>]*>', '', new_text[0])
                 first_100_letters = f'{new_text[0][:100]}...'
                 start_text.append(first_100_letters)
     return render_template('timeline.html', sorted_lines=new_sorted_lines, start_text=start_text)
@@ -177,7 +182,8 @@ def timeline_range(date):
     posts = Posts.query.order_by(Posts.left_date).all()
     lines = []
     for i in range(int(date), int(date)+100, 20):
-        lines.append(i)
+        if int(i) < 2039:
+            lines.append(i)
 
     posts_for_sort = posts.copy()
     sorted_lines = {}
@@ -204,6 +210,7 @@ def timeline_range(date):
         if v is not None:
             for post in v:
                 new_text = edit_text(post.text)
+                new_text[0] = re.sub('<[^>]*>', '', new_text[0])
                 first_100_letters = f'{new_text[0][:100]}...'
                 start_text.append(first_100_letters)
     return render_template('timeline.html', sorted_lines=new_sorted_lines, start_text=start_text)

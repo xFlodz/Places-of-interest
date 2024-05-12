@@ -20,7 +20,7 @@
         {% set count = namespace(a=0) %}
         {% for k, v in sorted_lines.items() %}
         <div>
-            <h3 style="margin: 0px 90px; width: 80px; text-align: center; margin-top: 5%; font-size: 18px;" 
+            <h3 style="margin: 0px 90px; width: 80px; text-align: center; margin-top: 5%; font-size: 18px;"
             class="timeline-post-date">{{k}}</h3> <!--Заголовок - год постов-->
             {% for post in v %}
             {% if post.visible == 'yes' %}
