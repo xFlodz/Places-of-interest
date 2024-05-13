@@ -393,6 +393,8 @@ def post(address):
         images_list = image_editor(images_list)
         notes = put_notes(images_list, notes)
         print(notes)
+        print(post.left_date)
+        print(post.right_date)
         tags = PostTags.query.filter_by(address=address).all()
         tags_list = []
         for tag in tags:
@@ -515,44 +517,31 @@ def confirm_post(address):
                            name=f'{current_user.surname} {current_user.name[0]}. {current_user.thirdname[0]}.',
                            current_date=current_date, left_date=left_date, right_date=right_date)
 
-@app.route('/generate_qr_code/<address>', methods=['GET'])
-@login_required
-def generate_qr_code(address):
-    img_base64 = qrcode_generate(address)
-    return render_template('qr_code.html', qr_img_base64=img_base64, post_address=address)
-
 
 @app.route('/print_qr_code_as_pdf/<address>')
 @login_required
 def print_qr_code_as_pdf(address):
-    qr_code = QRCode.query.filter_by(post_id=address).first()
-    if qr_code:
-        img_base64 = qr_code.image_base64
-        img_bytes = base64.b64decode(img_base64)
-        try:
-            pdf_buffer = BytesIO()
-            c = canvas.Canvas(pdf_buffer, pagesize=letter)
-            qr_img = ImageReader(BytesIO(img_bytes))
-            c.drawImage(qr_img, 1.3 * inch, 2 * inch, width=6 * inch, height=6 * inch)
-            img_path = current_app.root_path + '/static/qr_image/logo_qr.png'
-            c.drawImage(img_path, 1.3 * inch, 8 * inch, width=6.2 * inch, height=2 * inch)
-            c.save()
-            pdf_buffer.seek(0)
-            return send_file(pdf_buffer, mimetype='application/pdf', as_attachment=True, download_name='qr_code.pdf')
-        except Exception as e:
-            print(e)
-            abort(500)
-    else:
-        abort(404)
+    img_base64 = qrcode_generate(address)
+    img_bytes = base64.b64decode(img_base64)
+    try:
+        pdf_buffer = BytesIO()
+        c = canvas.Canvas(pdf_buffer, pagesize=letter)
+        qr_img = ImageReader(BytesIO(img_bytes))
+        c.drawImage(qr_img, 1.3 * inch, 2 * inch, width=6 * inch, height=6 * inch)
+        img_path = current_app.root_path + '/static/qr_image/logo_qr.png'
+        c.drawImage(img_path, 1.3 * inch, 8 * inch, width=6.2 * inch, height=2 * inch)
+        c.save()
+        pdf_buffer.seek(0)
+        return send_file(pdf_buffer, mimetype='application/pdf', as_attachment=True, download_name='qr_code.pdf')
+    except Exception as e:
+        print(e)
+        abort(500)
+
 
 @app.route('/show_qr_code/<address>')
 @login_required
 def show_qr_code(address):
-    qr_code = QRCode.query.filter_by(post_id=address).first()
-    if qr_code:
-        qr_img_base64 = qr_code.image_base64
-    else:
-        qr_img_base64 = qrcode_generate(address)
+    qr_img_base64 = qrcode_generate(address)
 
     return render_template('qr_code.html', qr_img_base64=qr_img_base64, post_id=address)
 

@@ -13,7 +13,7 @@ def qrcode_generate(address):
     box_size=10,
     border=4
     )
-    qr.add_data(f"http://192.168.0.107:8080//post/{address}")
+    qr.add_data(f"https://places-of-interest.onrender.com//post/{address}")
     qr.make(fit=True)
     qr_img = qr.make_image(fill_color="black", back_color="white")
 
@@ -25,10 +25,10 @@ def qrcode_generate(address):
     existing_qr_code = QRCode.query.filter_by(post_id=address).first()
 
     if existing_qr_code:
-        existing_qr_code.data = f"http://192.168.0.107:8080//post/{address}"
+        existing_qr_code.data = f"https://places-of-interest.onrender.com//post/{address}"
         existing_qr_code.image_base64 = img_base64
     else:
-        new_qr_code = QRCode(data=f"http://192.168.0.107:8080//post/{address}", post_id=address,
+        new_qr_code = QRCode(data=f"https://places-of-interest.onrender.com//post/{address}", post_id=address,
                             image_base64=img_base64)
         db.session.add(new_qr_code)
 
