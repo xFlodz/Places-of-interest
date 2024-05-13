@@ -24,7 +24,7 @@
                         </div>
                         <p class="image-description">{{notes[i]}}</p>
                     {% else %}
-                        <p style="white-space: pre-wrap; word-wrap: break-word;">{{ new_text[i] | safe }}</p>
+                        <p style="white-space: pre-wrap; word-wrap: break-word;">{{ new_text[i] | safe | replace('amp;', '')}}</p>
                     {%endif%}
                 {%endif%}
             {%endfor%}
